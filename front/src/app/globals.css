@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+:root {
+  /* Primary - Coral Ember */
+  --primary: #FF6B35;
+  --primary-hover: #FF8555;
+  --primary-light: #FF8F6B;
+  --primary-muted: rgba(255, 107, 53, 0.2);
+  --primary-foreground: #FAFAFA;
+
+  /* Background */
+  --background: #0A0A0A;
+  --surface: #141414;
+  --surface-hover: #1A1A1A;
+  --surface-elevated: #1E1E1E;
+
+  /* Border */
+  --border: #262626;
+  --border-hover: #333333;
+  --border-subtle: #1A1A1A;
+
+  /* Text */
+  --foreground: #FAFAFA;
+  --text-secondary: #A1A1A1;
+  --text-muted: #6B6B6B;
+
+  /* Semantic */
+  --success: #10B981;
+  --warning: #F59E0B;
+  --error: #EF4444;
+  --destructive: #EF4444;
+
+  /* shadcn compatibility */
+  --card: #141414;
+  --card-foreground: #FAFAFA;
+  --popover: #1E1E1E;
+  --popover-foreground: #FAFAFA;
+  --secondary: #262626;
+  --secondary-foreground: #FAFAFA;
+  --muted: #1A1A1A;
+  --muted-foreground: #A1A1A1;
+  --accent: #1E1E1E;
+  --accent-foreground: #FAFAFA;
+  --destructive-foreground: #FAFAFA;
+  --input: #262626;
+  --ring: #FF6B35;
+  --radius: 0.5rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-light: var(--primary-light);
+  --color-primary-muted: var(--primary-muted);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-border: var(--border);
+  --color-border-hover: var(--border-hover);
+  --color-border-subtle: var(--border-subtle);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+  --color-destructive: var(--destructive);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-ring: var(--ring);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-mono);
+  --font-headline: var(--font-headline);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-headline), sans-serif;
+}
+
+code, pre, kbd {
+  font-family: var(--font-mono), monospace;
+}
+
+/* Focus ring */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* Selection */
+::selection {
+  background: var(--primary-muted);
+  color: var(--foreground);
+}
+
+/* Scrollbar (Webkit) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-hover);
+}
