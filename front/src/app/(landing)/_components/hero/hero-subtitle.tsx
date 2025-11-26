@@ -2,11 +2,11 @@
 
 import { motion } from 'framer-motion'
 
-const highlights = [
-  '<10% false positives',
-  'Pre-commit detection',
-  'Auto-fix in 1 click',
-]
+// const highlights = [
+//   '<10% false positives',
+//   'Pre-commit detection',
+//   'Auto-fix in 1 click',
+// ]
 
 export function HeroSubtitle() {
   return (
@@ -16,11 +16,12 @@ export function HeroSubtitle() {
       transition={{ duration: 0.6, delay: 0.5 }}
       className='mb-8'
     >
-      <p className='mb-3 text-lg text-text-secondary md:text-xl'>
-        AI-powered TypeScript code review that actually works.
+      <p className='my-2.5 text-lg text-text-secondary md:text-xl'>
+        AI Agent that handles code review and complex refactoring,
+        automatically.
       </p>
 
-      <div className='flex flex-wrap items-center justify-center gap-x-1 gap-y-1 text-sm md:text-base'>
+      {/* <div className='flex flex-wrap items-center justify-center gap-x-1 gap-y-1 text-sm md:text-base'>
         {highlights.map((text, i) => (
           <motion.span
             key={text}
@@ -35,7 +36,7 @@ export function HeroSubtitle() {
             )}
           </motion.span>
         ))}
-      </div>
+      </div> */}
     </motion.div>
   )
 }

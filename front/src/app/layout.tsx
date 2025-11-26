@@ -1,9 +1,8 @@
 import type { Metadata } from 'next'
-import { Archivo_Black, IBM_Plex_Sans, JetBrains_Mono } from 'next/font/google'
+import { IBM_Plex_Sans, Inter_Tight, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 
-const archivoBlack = Archivo_Black({
-  weight: '400',
+const interTight = Inter_Tight({
   subsets: ['latin'],
   variable: '--font-headline',
   display: 'swap',
@@ -40,7 +39,7 @@ export default function RootLayout({
   return (
     <html lang='pt-BR' className='dark'>
       <body
-        className={`${archivoBlack.variable} ${ibmPlexSans.variable} ${jetbrainsMono.variable} antialiased`}
+        className={`${interTight.variable} ${ibmPlexSans.variable} ${jetbrainsMono.variable} antialiased`}
       >
         {children}
       </body>

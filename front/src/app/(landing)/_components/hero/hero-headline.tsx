@@ -8,9 +8,9 @@ export function HeroHeadline() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.3 }}
-      className='mb-4 text-4xl leading-tight font-bold text-foreground md:text-5xl lg:text-6xl'
+      className='mb-3 text-4xl leading-tight font-medium text-foreground sm:text-5xl md:text-6xl lg:text-7xl'
     >
-      Catch bugs, not feelings.
+      Eliminate bugs. Automate reviews. Go Bugless.
     </motion.h1>
   )
 }
