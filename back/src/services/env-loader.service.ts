@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+//Comentário teste de arquivo pablo cruz
 
 class EnvLoader {
   private static instance: EnvLoader;
