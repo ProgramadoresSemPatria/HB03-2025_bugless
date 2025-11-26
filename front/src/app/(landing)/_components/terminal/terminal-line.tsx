@@ -1,40 +1,40 @@
-"use client";
+'use client'
 
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion'
 
 type LineType =
-  | "command"
-  | "prompt"
-  | "option"
-  | "scanning"
-  | "critical"
-  | "warning"
-  | "description"
-  | "fix"
-  | "divider"
-  | "summary"
-  | "actions"
-  | "output";
+  | 'command'
+  | 'prompt'
+  | 'option'
+  | 'scanning'
+  | 'critical'
+  | 'warning'
+  | 'description'
+  | 'fix'
+  | 'divider'
+  | 'summary'
+  | 'actions'
+  | 'output'
 
 interface TerminalLineProps {
-  type: LineType;
-  content: string;
+  type: LineType
+  content: string
 }
 
 const styles: Record<LineType, string> = {
-  command: "text-text-muted",
-  prompt: "text-foreground",
-  option: "text-text-secondary",
-  scanning: "text-primary",
-  critical: "text-error",
-  warning: "text-warning",
-  description: "text-text-secondary",
-  fix: "text-primary-light",
-  divider: "text-border",
-  summary: "text-foreground font-medium",
-  actions: "text-text-muted",
-  output: "",
-};
+  command: 'text-text-muted',
+  prompt: 'text-foreground',
+  option: 'text-text-secondary',
+  scanning: 'text-primary',
+  critical: 'text-error',
+  warning: 'text-warning',
+  description: 'text-text-secondary',
+  fix: 'text-primary-light',
+  divider: 'text-border',
+  summary: 'text-foreground font-medium',
+  actions: 'text-text-muted',
+  output: '',
+}
 
 export function TerminalLine({ type, content }: TerminalLineProps) {
   return (
@@ -44,7 +44,7 @@ export function TerminalLine({ type, content }: TerminalLineProps) {
       transition={{ duration: 0.2 }}
       className={`${styles[type]} leading-relaxed whitespace-pre`}
     >
-      {content || "\u00A0"}
+      {content || '\u00A0'}
     </motion.div>
-  );
+  )
 }

@@ -61,6 +61,7 @@ src/
 ### Colocation
 
 Componentes usados apenas em uma rota ficam dentro dessa rota:
+
 - `app/(landing)/_components/` - componentes da landing
 - `app/(landing)/_hooks/` - hooks da landing
 
@@ -79,7 +80,6 @@ Pastas com `_` sao ignoradas pelo roteamento do Next.js.
 Path alias configurado: `@/` aponta para `src/`
 
 ```tsx
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 ```
-

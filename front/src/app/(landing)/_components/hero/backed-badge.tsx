@@ -1,24 +1,29 @@
-"use client";
+'use client'
 
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion'
+import Image from 'next/image'
 
 export function BackedBadge() {
   return (
-    <motion.div
+    <motion.a
+      href='https://www.borderlesscoding.com/'
+      target='_blank'
+      rel='noopener noreferrer'
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
-      className="mb-8"
+      className='mb-8 flex gap-2 rounded-full border bg-surface/30 px-4 py-2 text-sm text-text-secondary backdrop-blur-sm transition-all hover:scale-[102%] hover:border-foreground/50'
     >
-      <div className="inline-flex items-center gap-3 rounded-full border border-border/50 bg-surface/30 px-4 py-2 backdrop-blur-sm">
-        <div className="flex size-5 items-center justify-center rounded bg-primary text-[10px] font-bold text-primary-foreground">
-          B
-        </div>
-        <span className="text-sm text-text-secondary">
-          Backed by{" "}
-          <span className="font-semibold text-foreground">Borderless</span>
-        </span>
-      </div>
-    </motion.div>
-  );
+      Backed by
+      <span className='flex gap-2 font-semibold text-foreground'>
+        <Image
+          src='/assets/logo/borderless-logo.svg'
+          alt='Borderless Coding logo'
+          width={14}
+          height={14}
+        />
+        Borderless
+      </span>
+    </motion.a>
+  )
 }
