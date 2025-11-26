@@ -1,15 +1,15 @@
-"use client";
+'use client'
 
-import { motion } from "framer-motion";
-import Image from "next/image";
+import { motion } from 'framer-motion'
+import Image from 'next/image'
 
 export function AnimatedBugIcon() {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8, y: 20 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className="mb-6"
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+      className='mb-6'
     >
       <motion.div
         animate={{
@@ -18,30 +18,30 @@ export function AnimatedBugIcon() {
         transition={{
           duration: 3,
           repeat: Infinity,
-          ease: "easeInOut",
+          ease: 'easeInOut',
         }}
-        className="relative"
+        className='relative'
       >
-        <div className="absolute inset-0 blur-2xl">
+        <div className='absolute inset-0 blur-2xl'>
           <Image
-            src="/assets/logo/bugless_logo_transparent.png"
-            alt=""
+            src='/assets/logo/bugless_logo_transparent.png'
+            alt=''
             width={100}
             height={100}
-            className="mx-auto opacity-40"
-            aria-hidden="true"
+            className='mx-auto opacity-40'
+            aria-hidden='true'
           />
         </div>
 
         <Image
-          src="/assets/logo/bugless_logo_transparent.png"
-          alt="BugLess Logo"
+          src='/assets/logo/bugless_logo_transparent.png'
+          alt='BugLess Logo'
           width={100}
           height={100}
-          className="relative mx-auto"
+          className='relative mx-auto'
           priority
         />
       </motion.div>
     </motion.div>
-  );
+  )
 }

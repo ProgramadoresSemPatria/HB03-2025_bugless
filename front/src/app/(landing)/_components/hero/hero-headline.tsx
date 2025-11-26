@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion'
 
 export function HeroHeadline() {
   return (
@@ -8,9 +8,9 @@ export function HeroHeadline() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.3 }}
-      className="mb-4 text-4xl font-bold leading-tight md:text-5xl lg:text-6xl text-foreground"
+      className='mb-4 text-4xl leading-tight font-bold text-foreground md:text-5xl lg:text-6xl'
     >
       Catch bugs, not feelings.
     </motion.h1>
-  );
+  )
 }

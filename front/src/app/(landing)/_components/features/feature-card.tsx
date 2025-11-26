@@ -1,16 +1,16 @@
-"use client";
+'use client'
 
-import { motion } from "framer-motion";
-import type { Icon } from "@phosphor-icons/react";
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils'
+import type { Icon } from '@phosphor-icons/react'
+import { motion } from 'framer-motion'
 
 interface FeatureCardProps {
-  icon: Icon;
-  title: string;
-  description: string;
-  index: number;
-  isInView: boolean;
-  className?: string;
+  icon: Icon
+  title: string
+  description: string
+  index: number
+  isInView: boolean
+  className?: string
 }
 
 export function FeatureCard({
@@ -31,24 +31,18 @@ export function FeatureCard({
         ease: [0.21, 1.02, 0.73, 1],
       }}
       className={cn(
-        "group flex flex-col rounded-2xl p-6",
-        "bg-surface border border-border/50",
-        "hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5",
-        "transition-all duration-300 ease-out",
-        className
+        'group flex flex-col rounded-2xl p-6',
+        'border border-border/50 bg-surface',
+        'hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5',
+        'transition-all duration-300 ease-out',
+        className,
       )}
     >
-      <IconComponent
-        size={36}
-        weight="duotone"
-        className="mb-4 text-primary"
-      />
-      <h3 className="mb-2 text-lg font-semibold text-foreground">
-        {title}
-      </h3>
-      <p className="text-sm leading-relaxed text-text-secondary">
+      <IconComponent size={36} weight='duotone' className='mb-4 text-primary' />
+      <h3 className='mb-2 text-lg font-semibold text-foreground'>{title}</h3>
+      <p className='text-sm leading-relaxed text-text-secondary'>
         {description}
       </p>
     </motion.div>
-  );
+  )
 }
