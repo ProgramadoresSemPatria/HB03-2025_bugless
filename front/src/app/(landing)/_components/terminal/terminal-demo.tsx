@@ -174,15 +174,37 @@ export function TerminalDemo({ isInView = true }: TerminalDemoProps) {
 
   // Visibility helpers
   const showPrompt = !["typing-command"].includes(phase);
-  const showOptions = ["show-options", "navigating-options", "selected-option"].includes(phase);
-  const showScanning = ["scanning", "show-results", "show-actions", "typing-action", "applying-fixes", "done"].includes(phase);
-  const showResults = ["show-results", "show-actions", "typing-action", "applying-fixes", "done"].includes(phase);
-  const showActions = ["show-actions", "typing-action", "applying-fixes", "done"].includes(phase);
+  const showOptions = [
+    "show-options",
+    "navigating-options",
+    "selected-option",
+  ].includes(phase);
+  const showScanning = [
+    "scanning",
+    "show-results",
+    "show-actions",
+    "typing-action",
+    "applying-fixes",
+    "done",
+  ].includes(phase);
+  const showResults = [
+    "show-results",
+    "show-actions",
+    "typing-action",
+    "applying-fixes",
+    "done",
+  ].includes(phase);
+  const showActions = [
+    "show-actions",
+    "typing-action",
+    "applying-fixes",
+    "done",
+  ].includes(phase);
   const showApplying = ["applying-fixes", "done"].includes(phase);
 
   return (
-    <div className="overflow-hidden rounded-xl border-2 border-border bg-background">
-      <div className="flex items-center gap-2 border-b border-border bg-surface-elevated px-4 py-3">
+    <div className="overflow-hidden rounded-xl border-2 bg-background">
+      <div className="flex items-center gap-2 border-b bg-surface-elevated px-4 py-3">
         <div className="size-3 rounded-full bg-error" />
         <div className="size-3 rounded-full bg-warning" />
         <div className="size-3 rounded-full bg-success" />
@@ -202,9 +224,10 @@ export function TerminalDemo({ isInView = true }: TerminalDemoProps) {
               className="ml-px inline-block h-4 w-2 bg-primary"
             />
           )}
-          {phase !== "typing-command" && typedCommand.length === command.length && (
-            <span className="ml-2 text-text-muted/50 text-xs">↵</span>
-          )}
+          {phase !== "typing-command" &&
+            typedCommand.length === command.length && (
+              <span className="ml-2 text-text-muted/50 text-xs">↵</span>
+            )}
         </div>
 
         <AnimatePresence>
@@ -258,7 +281,8 @@ export function TerminalDemo({ isInView = true }: TerminalDemoProps) {
               <div className="text-primary flex items-center gap-2">
                 <span>\×/</span>
                 <span>
-                  BugLess • Analyzing {scanProgress < 3 ? `${scanProgress + 1}/3` : "3"} files
+                  BugLess • Analyzing{" "}
+                  {scanProgress < 3 ? `${scanProgress + 1}/3` : "3"} files
                   {scanProgress < 3 && (
                     <motion.span
                       animate={{ opacity: [1, 0.3] }}
@@ -267,7 +291,9 @@ export function TerminalDemo({ isInView = true }: TerminalDemoProps) {
                       ...
                     </motion.span>
                   )}
-                  {scanProgress >= 3 && <span className="text-success ml-1">✓</span>}
+                  {scanProgress >= 3 && (
+                    <span className="text-success ml-1">✓</span>
+                  )}
                 </span>
               </div>
             </motion.div>
@@ -282,7 +308,9 @@ export function TerminalDemo({ isInView = true }: TerminalDemoProps) {
               className="mt-3 space-y-2"
             >
               <div className="space-y-0.5">
-                <div className="text-error">✖ CRITICAL  src/api/users.ts:42</div>
+                <div className="text-error">
+                  ✖ CRITICAL src/api/users.ts:42
+                </div>
                 <div className="pl-4 text-text-secondary text-xs">
                   SQL injection vulnerability in query builder
                 </div>
@@ -292,7 +320,9 @@ export function TerminalDemo({ isInView = true }: TerminalDemoProps) {
               </div>
 
               <div className="space-y-0.5">
-                <div className="text-warning">⚠ WARNING   src/utils/parser.ts:18</div>
+                <div className="text-warning">
+                  ⚠ WARNING src/utils/parser.ts:18
+                </div>
                 <div className="pl-4 text-text-secondary text-xs">
                   Unhandled promise rejection possible
                 </div>
@@ -301,7 +331,7 @@ export function TerminalDemo({ isInView = true }: TerminalDemoProps) {
                 </div>
               </div>
 
-              <div className="border-t border-border/30 pt-2 mt-2">
+              <div className="border-t/30 pt-2 mt-2">
                 <div className="text-foreground">
                   \×/ Found: 1 critical, 1 warning, 0 info
                 </div>
@@ -318,13 +348,15 @@ export function TerminalDemo({ isInView = true }: TerminalDemoProps) {
               className="mt-3"
             >
               <div className="flex items-center gap-4 text-xs">
-                <span className={`px-2 py-0.5 rounded ${typedAction === "a" ? "bg-primary text-primary-foreground" : "text-text-muted border border-border/50"}`}>
+                <span
+                  className={`px-2 py-0.5 rounded ${typedAction === "a" ? "bg-primary text-primary-foreground" : "text-text-muted border/50"}`}
+                >
                   [A] Apply all
                 </span>
-                <span className="text-text-muted border border-border/50 px-2 py-0.5 rounded">
+                <span className="text-text-muted border/50 px-2 py-0.5 rounded">
                   [F] Apply one
                 </span>
-                <span className="text-text-muted border border-border/50 px-2 py-0.5 rounded">
+                <span className="text-text-muted border/50 px-2 py-0.5 rounded">
                   [S] Skip
                 </span>
               </div>
@@ -381,7 +413,7 @@ export function TerminalDemo({ isInView = true }: TerminalDemoProps) {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.3 }}
-                  className="mt-2 pt-2 border-t border-border/30 text-foreground font-medium"
+                  className="mt-2 pt-2 border-t/30 text-foreground font-medium"
                 >
                   \×/ All fixes applied successfully!
                 </motion.div>

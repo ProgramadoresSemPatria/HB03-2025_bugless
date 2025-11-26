@@ -56,7 +56,9 @@ function renderCell(value: string | boolean, isBugless = false) {
       <X weight="bold" className="size-5 text-text-muted" />
     );
   }
-  return <span className={isBugless ? "text-primary font-medium" : ""}>{value}</span>;
+  return (
+    <span className={isBugless ? "text-primary font-medium" : ""}>{value}</span>
+  );
 }
 
 export function ComparisonSection() {
@@ -82,7 +84,7 @@ export function ComparisonSection() {
         >
           <table className="w-full min-w-[600px]">
             <thead>
-              <tr className="border-b border-border">
+              <tr className="border-b">
                 <th className="px-6 py-4 text-left font-medium text-text-secondary">
                   Feature
                 </th>
@@ -104,7 +106,7 @@ export function ComparisonSection() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={isInView ? { opacity: 1, x: 0 } : {}}
                   transition={{ delay: 0.3 + i * 0.1 }}
-                  className="border-b border-border transition-colors hover:bg-primary/5"
+                  className="border-b transition-colors hover:bg-primary/5"
                 >
                   <td className="px-6 py-4 text-foreground">{feature.name}</td>
                   <td className="px-6 py-4 text-text-secondary">

@@ -25,15 +25,11 @@ export function ProblemCard({
       transition={{ duration: 0.6, delay: index * 0.15 }}
       whileHover={{ y: -4, borderColor: "var(--primary)" }}
       className="
-        p-8 bg-surface border border-border rounded-xl
+        p-8 bg-surface border rounded-xl
         transition-colors duration-300
       "
     >
-      <IconComponent
-        size={48}
-        weight="duotone"
-        className="mb-4 text-primary"
-      />
+      <IconComponent size={48} weight="duotone" className="mb-4 text-primary" />
       <h3 className="mb-3 text-xl font-semibold text-foreground">{title}</h3>
       <p className="leading-relaxed text-text-secondary">{description}</p>
     </motion.div>

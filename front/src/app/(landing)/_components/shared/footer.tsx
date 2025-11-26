@@ -10,7 +10,7 @@ export function Footer() {
   const [email, setEmail] = useState("");
 
   return (
-    <footer className="border-t border-border bg-background">
+    <footer className="border-t bg-background">
       <section className="py-24">
         <Container className="text-center">
           <motion.div
@@ -27,7 +27,7 @@ export function Footer() {
             </p>
 
             <div className="mx-auto max-w-md">
-              <div className="flex gap-2 p-2 rounded-lg border border-border bg-surface">
+              <div className="flex gap-2 p-2 rounded-lg border bg-surface">
                 <input
                   type="email"
                   value={email}
@@ -49,7 +49,7 @@ export function Footer() {
         </Container>
       </section>
 
-      <div className="border-t border-border py-8">
+      <div className="border-t py-8">
         <Container>
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             <div className="flex items-center gap-2">
@@ -64,13 +64,22 @@ export function Footer() {
             </div>
 
             <nav className="flex items-center gap-6 text-sm text-text-secondary">
-              <a href="#features" className="transition-colors hover:text-foreground">
+              <a
+                href="#features"
+                className="transition-colors hover:text-foreground"
+              >
                 Features
               </a>
-              <a href="#pricing" className="transition-colors hover:text-foreground">
+              <a
+                href="#pricing"
+                className="transition-colors hover:text-foreground"
+              >
                 Pricing
               </a>
-              <a href="#docs" className="transition-colors hover:text-foreground">
+              <a
+                href="#docs"
+                className="transition-colors hover:text-foreground"
+              >
                 Docs
               </a>
             </nav>

@@ -58,9 +58,7 @@ export function Header() {
         transition={{ duration: 0.5, ease: "easeOut" }}
         className={cn(
           "fixed left-0 right-0 top-0 z-50 transition-all border-b duration-300 border-transparent",
-          isScrolled
-            ? "bg-background/80 backdrop-blur-lg border-border"
-            : "bg-transparent"
+          isScrolled ? "bg-background/80 backdrop-blur-lg" : "bg-transparent"
         )}
       >
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">

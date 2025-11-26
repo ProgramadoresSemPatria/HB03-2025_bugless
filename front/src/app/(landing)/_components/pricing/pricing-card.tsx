@@ -36,7 +36,7 @@ export function PricingCard({
         "relative flex flex-col rounded-2xl border p-8",
         popular
           ? "border-primary bg-surface shadow-[0_0_40px_rgba(255,107,53,0.15)]"
-          : "border-border bg-surface"
+          : "bg-surface"
       )}
     >
       {popular && (
@@ -60,7 +60,10 @@ export function PricingCard({
       <ul className="mb-8 flex-1 space-y-3">
         {features.map((feature) => (
           <li key={feature} className="flex items-start gap-3">
-            <Check weight="bold" className="mt-0.5 size-5 shrink-0 text-primary" />
+            <Check
+              weight="bold"
+              className="mt-0.5 size-5 shrink-0 text-primary"
+            />
             <span className="text-sm text-text-secondary">{feature}</span>
           </li>
         ))}
@@ -73,7 +76,7 @@ export function PricingCard({
           "w-full rounded-lg py-3 font-medium transition-colors",
           popular
             ? "bg-primary text-primary-foreground hover:bg-primary-hover"
-            : "border border-border bg-transparent text-foreground hover:bg-surface-hover"
+            : "border bg-transparent text-foreground hover:bg-surface-hover"
         )}
       >
         {cta}

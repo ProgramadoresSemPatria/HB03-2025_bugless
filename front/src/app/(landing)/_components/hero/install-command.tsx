@@ -34,10 +34,10 @@ export function InstallCommand() {
       transition={{ duration: 0.6, delay: 0.8 }}
       className="mx-auto max-w-md"
     >
-      <div className="flex items-center gap-2 rounded-lg border border-border bg-surface p-2">
+      <div className="flex items-center gap-2 rounded-lg border bg-surface p-2">
         <div className="flex flex-1 items-center gap-3 px-4 py-2">
           <span className="text-text-muted">$</span>
-          <code className="font-mono text-sm text-foreground sm:text-base">
+          <code className="text-sm text-foreground sm:text-base">
             {INSTALL_COMMAND}
           </code>
         </div>
@@ -85,7 +85,6 @@ export function InstallCommand() {
           </AnimatePresence>
         </motion.button>
       </div>
-
     </motion.div>
   );
 }
