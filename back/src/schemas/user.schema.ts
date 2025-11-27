@@ -1,7 +1,7 @@
 import { z } from "zod";
+import { ulidRule } from "./common.schema";
 
 // Rules for the user schema
-const idRule = z.string().min(1);
 const emailRule = z.email();
 const passwordRule = z.coerce.string().min(8);
 const nameRule = z.string().min(1);
@@ -15,7 +15,7 @@ export const userSchema = z.object({
 export type UserSchema = z.infer<typeof userSchema>;
 
 export const getUserByIdSchema = z.object({
-    id: idRule,
+    id: ulidRule,
 });
 
 export type GetUserByIdSchema = z.infer<typeof getUserByIdSchema>;

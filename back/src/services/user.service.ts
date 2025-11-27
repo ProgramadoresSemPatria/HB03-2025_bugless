@@ -1,5 +1,5 @@
 import prisma from "../database/prisma";
-import { UserSchema, GetUserByIdSchema, GetUserByEmailSchema } from "../schemas/user.schema";
+import { UserSchema, GetUserByEmailSchema } from "../schemas/user.schema";
 import { hashSync } from "bcrypt";
 
 class UserService {
@@ -40,12 +40,12 @@ class UserService {
         return user
     }
 
-    async updateUser(data: GetUserByIdSchema, updateData: UserSchema){
+    async updateUser(id: string, updateData: UserSchema){
         const hashSalt = 10
         const hashedPassword = hashSync(updateData.password, hashSalt)
 
         const user = await prisma.user.update({
-            where: { id: data.id },
+            where: { id },
             data: { 
                 name: updateData.name, 
                 email: updateData.email, 
@@ -60,9 +60,9 @@ class UserService {
         return user
     }
     
-    async deleteUser(data: GetUserByIdSchema){
+    async deleteUser(id: string){
         const user = await prisma.user.delete({
-            where: { id: data.id }
+            where: { id }
         })
 
         if(!user){
