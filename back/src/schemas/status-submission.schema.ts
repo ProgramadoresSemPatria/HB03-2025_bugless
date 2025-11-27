@@ -5,3 +5,10 @@ export const statusSubmissionSchema = z.object({
 });
 
 export type StatusSubmissionSchema = z.infer<typeof statusSubmissionSchema>;
+
+
+export const getByIdStatusSubmissionSchema = z.object({
+    id: z.string().min(1),
+});
+
+export type GetByIdStatusSubmissionSchema = z.infer<typeof getByIdStatusSubmissionSchema>;
