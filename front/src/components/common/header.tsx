@@ -1,5 +1,6 @@
 'use client'
 
+import { Container } from '@/app/(landing)/_components/shared/container'
 import { NAV_LINKS } from '@/lib/constants'
 import { ListIcon, XIcon } from '@phosphor-icons/react'
 import { AnimatePresence, motion } from 'framer-motion'
@@ -20,41 +21,43 @@ export function Header() {
           ease: 'easeOut',
           delay: 1,
         }}
-        className='fixed top-0 left-0 z-50 w-full bg-linear-to-b from-black via-black/60 to-transparent px-6 md:px-8 md:py-2'
+        className='fixed top-0 left-0 z-50 w-full bg-linear-to-b from-black via-black/60 to-transparent md:py-2'
       >
-        <div className='mx-auto flex max-w-7xl items-center justify-between py-4 md:px-4 lg:px-12'>
-          <Logo />
+        <Container>
+          <div className='flex items-center justify-between py-4'>
+            <Logo />
 
-          <nav className='hidden md:flex md:items-center md:gap-6'>
-            {NAV_LINKS.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className='text-sm text-text-secondary transition-colors hover:text-foreground'
-              >
-                {link.label}
-              </a>
-            ))}
-          </nav>
+            <nav className='hidden md:flex md:items-center md:gap-6'>
+              {NAV_LINKS.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className='text-sm text-text-secondary transition-colors hover:text-foreground'
+                >
+                  {link.label}
+                </a>
+              ))}
+            </nav>
 
-          <div className='hidden md:flex'>
-            <Button>Get started</Button>
+            <div className='hidden md:flex'>
+              <Button>Get started</Button>
+            </div>
+
+            <Button
+              onClick={() => setIsMobileMenuOpen((open) => !open)}
+              variant='ghost'
+              size='icon-lg'
+              className='-mr-2 md:hidden'
+              aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+            >
+              {isMobileMenuOpen ? (
+                <XIcon size={24} weight='bold' />
+              ) : (
+                <ListIcon size={24} weight='bold' />
+              )}
+            </Button>
           </div>
-
-          <Button
-            onClick={() => setIsMobileMenuOpen((open) => !open)}
-            variant='ghost'
-            size='icon-lg'
-            className='-mr-2 md:hidden'
-            aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
-          >
-            {isMobileMenuOpen ? (
-              <XIcon size={24} weight='bold' />
-            ) : (
-              <ListIcon size={24} weight='bold' />
-            )}
-          </Button>
-        </div>
+        </Container>
       </motion.header>
 
       <AnimatePresence>
