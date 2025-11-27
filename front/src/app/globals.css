@@ -89,7 +89,7 @@
   }
 
   html {
-    @apply scheme-dark;
+    @apply scroll-smooth scheme-dark;
   }
 
   body {
