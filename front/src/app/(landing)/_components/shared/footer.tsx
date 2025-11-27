@@ -1,8 +1,9 @@
 'use client'
 
+import { Logo } from '@/components/common/logo'
+import { NAV_LINKS } from '@/lib/constants'
 import { ArrowRight, GithubLogo, TwitterLogo } from '@phosphor-icons/react'
 import { motion } from 'framer-motion'
-import Image from 'next/image'
 import { useState } from 'react'
 import { Container } from './container'
 
@@ -52,36 +53,18 @@ export function Footer() {
       <div className='border-t py-8'>
         <Container>
           <div className='flex flex-col items-center justify-between gap-4 md:flex-row'>
-            <div className='flex items-center gap-2'>
-              <Image
-                src='/assets/logo/bugless_logo_transparent.png'
-                alt='BugLess'
-                width={32}
-                height={32}
-                className='size-8'
-              />
-              <span className='font-semibold text-foreground'>BugLess</span>
-            </div>
+            <Logo />
 
             <nav className='flex items-center gap-6 text-sm text-text-secondary'>
-              <a
-                href='#features'
-                className='transition-colors hover:text-foreground'
-              >
-                Features
-              </a>
-              <a
-                href='#pricing'
-                className='transition-colors hover:text-foreground'
-              >
-                Pricing
-              </a>
-              <a
-                href='#docs'
-                className='transition-colors hover:text-foreground'
-              >
-                Docs
-              </a>
+              {NAV_LINKS.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className='transition-colors hover:text-foreground'
+                >
+                  {link.label}
+                </a>
+              ))}
             </nav>
 
             <div className='flex items-center gap-4'>
