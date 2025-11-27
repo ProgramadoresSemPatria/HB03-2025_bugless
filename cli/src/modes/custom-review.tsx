@@ -12,6 +12,7 @@ import {
   BranchSelector,
   CommandLog,
   useCommandExecution,
+  ResultActions,
 } from '../components/index.js';
 import { useReview } from '../hooks/use-review.js';
 import { useUncommittedDiff, useBranchDiff } from '../hooks/use-git.js';
@@ -318,9 +319,10 @@ export function CustomReview({ preset: initialPreset, onBack }: CustomReviewProp
         </>
       )}
 
-      <Box marginTop={1}>
-        <Text dimColor>Press Esc or 'q' to go back to menu</Text>
-      </Box>
+      <ResultActions
+        issues={result?.issues || []}
+        onNewReview={onBack}
+      />
     </Box>
   );
 }

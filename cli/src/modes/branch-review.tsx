@@ -10,6 +10,7 @@ import {
   PresetInfo,
   CommandLog,
   useCommandExecution,
+  ResultActions,
 } from '../components/index.js';
 import { useReview } from '../hooks/use-review.js';
 import { useBranchDiff } from '../hooks/use-git.js';
@@ -156,9 +157,10 @@ export function BranchReview({ baseBranch: initialBranch, preset, onBack }: Bran
         <ReviewSummary summary={result.summary} reviewedFiles={result.reviewedFiles} />
         <IssueList issues={result.issues} />
 
-        <Box marginTop={1}>
-          <Text dimColor>Press Esc or 'q' to go back to menu</Text>
-        </Box>
+        <ResultActions
+          issues={result.issues}
+          onNewReview={onBack}
+        />
       </Box>
     );
   }

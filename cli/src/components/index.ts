@@ -8,3 +8,4 @@ export { CommitSelector } from './commit-selector.js';
 export { PresetSelector, PresetInfo } from './preset-selector.js';
 export { ErrorMessage, NotGitRepoError, NoChangesError } from './error.js';
 export { CommandLog, useCommandExecution } from './command-log.js';
+export { ResultActions } from './result-actions.js';

@@ -9,6 +9,7 @@ import {
   PresetInfo,
   CommandLog,
   useCommandExecution,
+  ResultActions,
 } from '../components/index.js';
 import { useReview } from '../hooks/use-review.js';
 import { useUncommittedDiff } from '../hooks/use-git.js';
@@ -124,9 +125,10 @@ export function UncommittedReview({ preset, onBack }: UncommittedReviewProps) {
         <ReviewSummary summary={result.summary} reviewedFiles={result.reviewedFiles} />
         <IssueList issues={result.issues} />
 
-        <Box marginTop={1}>
-          <Text dimColor>Press Esc or 'q' to go back to menu</Text>
-        </Box>
+        <ResultActions
+          issues={result.issues}
+          onNewReview={onBack}
+        />
       </Box>
     );
   }
