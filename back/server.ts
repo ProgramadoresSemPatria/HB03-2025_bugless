@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import statusSubmissionRouter from "./src/routes/status-submission.routes";
 import envLoader from "./src/services/env-loader.service";
 import authRouter from "./src/routes/auth.routes";
+import projectRouter from "./src/routes/project.routes";
 
 const PORT = envLoader.getEnv("PORT")
 
@@ -11,6 +12,7 @@ app.use(express.json());
 
 app.use("/status-submissions", statusSubmissionRouter);
 app.use("/auth", authRouter);
+app.use("/projects", projectRouter);
 
 app.get("/", async (req: Request, res: Response) => {
   res.send("API is running");
