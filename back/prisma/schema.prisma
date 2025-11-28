@@ -92,10 +92,15 @@ enum SubmissionMode {
   CUSTOM
 }
 
+enum StatusSubmissionEnum {
+  PENDING
+  COMPLETED
+  FAILED
+}
 
 model StatusSubmission {
   id   String @id @default(ulid())
-  name String @map("name_status_submission")
+  name StatusSubmissionEnum @map("name_status_submission")
   
   submissions Submission[]
   
@@ -109,6 +114,7 @@ model Submission {
   userId            String            @map("user_id")
   projectId         String            @map("project_id")
   statusSubmissionId String           @map("id_status_submission")
+  metadata          Json?             @map("metadata")
   
   user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   project         Project           @relation(fields: [projectId], references: [id], onDelete: Cascade)

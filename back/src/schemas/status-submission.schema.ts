@@ -1,8 +1,9 @@
 import { z } from "zod";
 import { ulidRule } from "./common.schema";
+import { StatusSubmissionEnum } from "../generated/prisma/enums";
 
 export const statusSubmissionSchema = z.object({
-    name: z.string().min(1),
+    name: z.enum(StatusSubmissionEnum).default(StatusSubmissionEnum.PENDING),
 });
 
 export type StatusSubmissionSchema = z.infer<typeof statusSubmissionSchema>;
