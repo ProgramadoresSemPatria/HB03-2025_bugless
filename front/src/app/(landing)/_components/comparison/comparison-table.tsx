@@ -81,7 +81,11 @@ export function ComparisonSection() {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.95])
 
   return (
-    <section ref={sectionRef} className='sticky top-0 bg-surface py-32'>
+    <section
+      id='compare'
+      ref={sectionRef}
+      className='sticky top-0 bg-surface py-32'
+    >
       <motion.div
         ref={ref}
         style={
@@ -94,62 +98,64 @@ export function ComparisonSection() {
         }
       >
         <Container>
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className='mb-16 text-center text-4xl text-foreground md:text-5xl'
-        >
-          How we compare
-        </motion.h2>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6 }}
+            className='mb-16 text-center text-4xl text-foreground md:text-5xl'
+          >
+            How we compare
+          </motion.h2>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className='overflow-x-auto'
-        >
-          <table className='w-full min-w-[600px]'>
-            <thead>
-              <tr className='border-b'>
-                <th className='px-6 py-4 text-left font-medium text-text-secondary'>
-                  Feature
-                </th>
-                <th className='px-6 py-4 text-left font-medium text-text-secondary'>
-                  CodeRabbit
-                </th>
-                <th className='px-6 py-4 text-left font-medium text-text-secondary'>
-                  PR-Agent
-                </th>
-                <th className='border-l-2 border-primary px-6 py-4 text-left font-medium text-primary'>
-                  BugLess
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {features.map((feature, i) => (
-                <motion.tr
-                  key={feature.name}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ delay: 0.3 + i * 0.1 }}
-                  className='border-b transition-colors hover:bg-primary/5'
-                >
-                  <td className='px-6 py-4 text-foreground'>{feature.name}</td>
-                  <td className='px-6 py-4 text-text-secondary'>
-                    {renderCell(feature.coderabbit)}
-                  </td>
-                  <td className='px-6 py-4 text-text-secondary'>
-                    {renderCell(feature.pragent)}
-                  </td>
-                  <td className='border-l-2 border-primary px-6 py-4 font-medium text-foreground'>
-                    {renderCell(feature.bugless, true)}
-                  </td>
-                </motion.tr>
-              ))}
-            </tbody>
-          </table>
-        </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className='overflow-x-auto'
+          >
+            <table className='w-full min-w-[600px]'>
+              <thead>
+                <tr className='border-b'>
+                  <th className='px-6 py-4 text-left font-medium text-text-secondary'>
+                    Feature
+                  </th>
+                  <th className='px-6 py-4 text-left font-medium text-text-secondary'>
+                    CodeRabbit
+                  </th>
+                  <th className='px-6 py-4 text-left font-medium text-text-secondary'>
+                    PR-Agent
+                  </th>
+                  <th className='border-l-2 border-primary px-6 py-4 text-left font-medium text-primary'>
+                    BugLess
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {features.map((feature, i) => (
+                  <motion.tr
+                    key={feature.name}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={isInView ? { opacity: 1, x: 0 } : {}}
+                    transition={{ delay: 0.3 + i * 0.1 }}
+                    className='border-b transition-colors hover:bg-primary/5'
+                  >
+                    <td className='px-6 py-4 text-foreground'>
+                      {feature.name}
+                    </td>
+                    <td className='px-6 py-4 text-text-secondary'>
+                      {renderCell(feature.coderabbit)}
+                    </td>
+                    <td className='px-6 py-4 text-text-secondary'>
+                      {renderCell(feature.pragent)}
+                    </td>
+                    <td className='border-l-2 border-primary px-6 py-4 font-medium text-foreground'>
+                      {renderCell(feature.bugless, true)}
+                    </td>
+                  </motion.tr>
+                ))}
+              </tbody>
+            </table>
+          </motion.div>
         </Container>
       </motion.div>
     </section>

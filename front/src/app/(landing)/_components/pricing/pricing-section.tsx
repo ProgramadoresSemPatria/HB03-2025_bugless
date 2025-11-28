@@ -56,6 +56,7 @@ export function PricingSection() {
 
   return (
     <section
+      id='pricing'
       ref={ref}
       className='relative z-10 rounded-t-3xl bg-background py-32 shadow-[0_-20px_50px_rgba(0,0,0,0.3)]'
     >

@@ -58,7 +58,7 @@ export function FeaturesSection() {
   const { ref, isInView } = useSectionReveal()
 
   return (
-    <section ref={ref} className='relative overflow-hidden py-32'>
+    <section id='features' ref={ref} className='relative overflow-hidden py-32'>
       <ConnectionGraph />
 
       <Container className='relative z-10'>
