@@ -8,7 +8,7 @@ import { PricingCard } from './pricing-card'
 const plans = [
   {
     name: 'Hobby',
-    price: 'Free',
+    price: '$0',
     description: 'Perfect for side projects and learning.',
     features: [
       'Up to 3 repositories',
@@ -67,16 +67,16 @@ export function PricingSection() {
           transition={{ duration: 0.6 }}
           className='mb-16 text-center'
         >
-          <h2 className='mb-4 text-4xl text-foreground md:text-5xl'>
+          <h2 className='mb-4 text-4xl text-balance text-foreground md:text-5xl'>
             Simple, transparent pricing
           </h2>
-          <p className='mx-auto max-w-xl text-lg text-text-secondary'>
+          <p className='mx-auto max-w-xl text-lg text-pretty text-text-secondary'>
             Start free, upgrade when you need more. No hidden fees, no
             surprises.
           </p>
         </motion.div>
 
-        <div className='mx-auto grid max-w-5xl gap-8 md:grid-cols-3'>
+        <div className='mx-auto grid max-w-6xl gap-10 md:grid-cols-3'>
           {plans.map((plan, i) => (
             <PricingCard
               key={plan.name}
@@ -92,15 +92,6 @@ export function PricingSection() {
             />
           ))}
         </div>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.8 }}
-          className='mt-12 text-center text-sm text-text-muted'
-        >
-          All plans include a 14-day free trial. No credit card required.
-        </motion.p>
       </Container>
     </section>
   )
