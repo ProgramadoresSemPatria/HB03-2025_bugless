@@ -58,7 +58,7 @@ export function PricingSection() {
     <section
       id='pricing'
       ref={ref}
-      className='relative z-10 rounded-t-3xl bg-background py-32 shadow-[0_-20px_50px_rgba(0,0,0,0.3)]'
+      className='relative z-10 scroll-mt-20 rounded-t-3xl bg-background py-32 shadow-[0_-20px_50px_rgba(0,0,0,0.3)]'
     >
       <Container>
         <motion.div
