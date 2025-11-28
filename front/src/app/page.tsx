@@ -20,8 +20,10 @@ export default function Home() {
       <ProblemSection />
       <TerminalSection />
       <FeaturesSection />
-      <ComparisonSection />
-      <PricingSection />
+      <div className='relative'>
+        <ComparisonSection />
+        <PricingSection />
+      </div>
       <CTASection />
       <Footer />
     </main>

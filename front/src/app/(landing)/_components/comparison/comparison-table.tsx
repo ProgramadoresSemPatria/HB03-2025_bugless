@@ -2,7 +2,13 @@
 
 import { useSectionReveal } from '@/app/(landing)/_hooks/use-section-reveal'
 import { CheckIcon, XIcon } from '@phosphor-icons/react'
-import { motion } from 'framer-motion'
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from 'framer-motion'
+import { useRef } from 'react'
 import { Container } from '../shared/container'
 
 interface Feature {
@@ -63,10 +69,31 @@ function renderCell(value: string | boolean, isBugless = false) {
 
 export function ComparisonSection() {
   const { ref, isInView } = useSectionReveal()
+  const sectionRef = useRef<HTMLElement>(null)
+  const prefersReducedMotion = useReducedMotion()
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end start'],
+  })
+
+  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.3])
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.95])
 
   return (
-    <section ref={ref} className='bg-surface py-32'>
-      <Container>
+    <section ref={sectionRef} className='sticky top-0 bg-surface py-32'>
+      <motion.div
+        ref={ref}
+        style={
+          prefersReducedMotion
+            ? {}
+            : {
+                opacity,
+                scale,
+              }
+        }
+      >
+        <Container>
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -123,7 +150,8 @@ export function ComparisonSection() {
             </tbody>
           </table>
         </motion.div>
-      </Container>
+        </Container>
+      </motion.div>
     </section>
   )
 }

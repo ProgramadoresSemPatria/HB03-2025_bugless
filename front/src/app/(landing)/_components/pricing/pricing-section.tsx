@@ -55,7 +55,10 @@ export function PricingSection() {
   const { ref, isInView } = useSectionReveal()
 
   return (
-    <section ref={ref} className='bg-background py-32'>
+    <section
+      ref={ref}
+      className='relative z-10 rounded-t-3xl bg-background py-32 shadow-[0_-20px_50px_rgba(0,0,0,0.3)]'
+    >
       <Container>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
