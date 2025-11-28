@@ -34,9 +34,9 @@ export function AnimatedBugIcon() {
 
         <Image
           src='/assets/logo/bugless_logo_transparent.png'
-          alt='BugLess Logo'
-          width={100}
-          height={100}
+          alt='Bugless logo'
+          width={80}
+          height={80}
           className='relative mx-auto'
           priority
         />

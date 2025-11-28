@@ -1,114 +1,63 @@
 'use client'
 
-import { cn } from '@/lib/utils'
-import { List, X } from '@phosphor-icons/react'
+import { Container } from '@/app/(landing)/_components/shared/container'
+import { NAV_LINKS } from '@/lib/constants'
+import { ListIcon, XIcon } from '@phosphor-icons/react'
 import { AnimatePresence, motion } from 'framer-motion'
-import Image from 'next/image'
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
-
-const navLinks = [
-  { href: '#features', label: 'Features' },
-  { href: '#pricing', label: 'Pricing' },
-  { href: '#docs', label: 'Docs' },
-]
+import { useState } from 'react'
+import { Button } from '../ui/button'
+import { Logo } from './logo'
 
 export function Header() {
-  const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20)
-    }
-
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  // Close mobile menu on resize
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 768) {
-        setIsMobileMenuOpen(false)
-      }
-    }
-
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
-
-  // Prevent body scroll when mobile menu is open
-  useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = ''
-    }
-    return () => {
-      document.body.style.overflow = ''
-    }
-  }, [isMobileMenuOpen])
 
   return (
     <>
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
-        className={cn(
-          'fixed top-0 right-0 left-0 z-50 border-b border-transparent transition-all duration-300',
-          isScrolled
-            ? 'border-border bg-background/80 backdrop-blur-lg'
-            : 'bg-transparent',
-        )}
+        transition={{
+          duration: 0.5,
+          ease: 'easeOut',
+          delay: 1,
+        }}
+        className='fixed top-0 left-0 z-50 w-full bg-linear-to-b from-black via-black/60 to-transparent md:py-2'
       >
-        <div className='mx-auto flex h-16 max-w-7xl items-center justify-between px-6'>
-          <Link href='/' className='flex items-center gap-2'>
-            <Image
-              src='/assets/logo/bugless_logo_transparent.png'
-              alt='BugLess'
-              width={32}
-              height={32}
-              className='size-8'
-            />
-            <span className='font-semibold text-foreground'>BugLess</span>
-          </Link>
+        <Container>
+          <div className='flex items-center justify-between py-4'>
+            <Logo />
 
-          <nav className='hidden items-center gap-8 md:flex'>
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className='text-sm text-text-secondary transition-colors hover:text-foreground'
-              >
-                {link.label}
-              </a>
-            ))}
-          </nav>
+            <nav className='hidden md:flex md:items-center md:gap-6'>
+              {NAV_LINKS.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className='text-sm text-text-secondary transition-colors hover:text-foreground'
+                >
+                  {link.label}
+                </a>
+              ))}
+            </nav>
 
-          <div className='hidden md:block'>
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className='rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover'
+            <div className='hidden md:flex'>
+              <Button>Get started</Button>
+            </div>
+
+            <Button
+              onClick={() => setIsMobileMenuOpen((open) => !open)}
+              variant='ghost'
+              size='icon-lg'
+              className='-mr-2 md:hidden'
+              aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
             >
-              Get Started
-            </motion.button>
+              {isMobileMenuOpen ? (
+                <XIcon size={24} weight='bold' />
+              ) : (
+                <ListIcon size={24} weight='bold' />
+              )}
+            </Button>
           </div>
-
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className='flex size-10 items-center justify-center rounded-lg text-foreground transition-colors hover:bg-surface md:hidden'
-            aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
-          >
-            {isMobileMenuOpen ? (
-              <X size={24} weight='bold' />
-            ) : (
-              <List size={24} weight='bold' />
-            )}
-          </button>
-        </div>
+        </Container>
       </motion.header>
 
       <AnimatePresence>
@@ -127,7 +76,7 @@ export function Header() {
               transition={{ duration: 0.3, delay: 0.1 }}
               className='flex h-full flex-col items-center justify-center gap-8'
             >
-              {navLinks.map((link, index) => (
+              {NAV_LINKS.map((link, index) => (
                 <motion.a
                   key={link.href}
                   href={link.href}
@@ -147,7 +96,7 @@ export function Header() {
                 transition={{ delay: 0.4 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className='mt-4 rounded-lg bg-primary px-8 py-3 text-lg font-medium text-primary-foreground transition-colors hover:bg-primary-hover'
+                className='mt-4 cursor-pointer rounded-lg bg-primary px-8 py-3 text-lg font-medium text-primary-foreground transition-colors hover:bg-primary-hover'
               >
                 Get Started
               </motion.button>

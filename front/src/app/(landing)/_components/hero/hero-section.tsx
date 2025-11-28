@@ -6,11 +6,10 @@ import { FlowFieldCanvas } from './flow-field-canvas'
 import { HeroHeadline } from './hero-headline'
 import { HeroSubtitle } from './hero-subtitle'
 import { InstallCommand } from './install-command'
-import { ScrollIndicator } from './scroll-indicator'
 
 export function HeroSection() {
   return (
-    <section className='relative flex min-h-screen justify-center overflow-hidden pt-36 lg:pt-40'>
+    <section className='flex justify-center pt-28 sm:pt-36 lg:pt-40'>
       <FlowFieldCanvas />
 
       <div className='relative z-10 mx-auto flex max-w-4xl flex-col items-center px-6 text-center'>
@@ -20,8 +19,6 @@ export function HeroSection() {
         <HeroSubtitle />
         <InstallCommand />
       </div>
-
-      <ScrollIndicator />
     </section>
   )
 }

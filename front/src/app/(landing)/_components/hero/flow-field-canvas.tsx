@@ -92,8 +92,7 @@ export function FlowFieldCanvas() {
   return (
     <canvas
       ref={canvasRef}
-      className='absolute inset-0 opacity-60'
-      style={{ width: '100%', height: '100%' }}
+      className='absolute inset-0 z-10 h-screen w-full opacity-60'
     />
   )
 }

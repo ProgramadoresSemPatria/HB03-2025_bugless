@@ -3,12 +3,12 @@
 import { useSectionReveal } from '@/app/(landing)/_hooks/use-section-reveal'
 import type { Icon } from '@phosphor-icons/react'
 import {
-  Brain,
-  GithubLogo,
-  Lightning,
-  Sliders,
-  Target,
-  Terminal,
+  BrainIcon,
+  GithubLogoIcon,
+  LightningIcon,
+  SlidersIcon,
+  TargetIcon,
+  TerminalIcon,
 } from '@phosphor-icons/react'
 import { motion } from 'framer-motion'
 import { Container } from '../shared/container'
@@ -23,32 +23,32 @@ interface Feature {
 
 const features: Feature[] = [
   {
-    icon: Terminal,
+    icon: TerminalIcon,
     title: 'Built for the terminal',
     description: '4 review modes that integrate seamlessly with your workflow.',
   },
   {
-    icon: GithubLogo,
+    icon: GithubLogoIcon,
     title: 'Automatic PR reviews',
     description: 'Install once, get reviews on every PR with 1-click fixes.',
   },
   {
-    icon: Lightning,
+    icon: LightningIcon,
     title: 'Understands TypeScript',
     description: 'Type inference, generics, decorators. Not generic rules.',
   },
   {
-    icon: Target,
+    icon: TargetIcon,
     title: 'Catch bugs early',
     description: 'Review uncommitted changes before they hit git.',
   },
   {
-    icon: Sliders,
+    icon: SlidersIcon,
     title: 'Your team, your rules',
     description: 'Focus on security, performance, or custom patterns.',
   },
   {
-    icon: Brain,
+    icon: BrainIcon,
     title: 'Gets smarter over time',
     description: 'Learns from your feedback. Adapts to your codebase.',
   },
@@ -58,7 +58,7 @@ export function FeaturesSection() {
   const { ref, isInView } = useSectionReveal()
 
   return (
-    <section ref={ref} className='relative overflow-hidden py-32'>
+    <section id='features' ref={ref} className='relative overflow-hidden py-32'>
       <ConnectionGraph />
 
       <Container className='relative z-10'>

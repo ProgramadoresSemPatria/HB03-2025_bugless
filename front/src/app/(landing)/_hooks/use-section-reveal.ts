@@ -13,7 +13,7 @@ export function useSectionReveal(options: UseSectionRevealOptions = {}) {
   const ref = useRef(null)
   const isInView = useInView(ref, {
     once: options.once ?? true,
-    amount: options.amount ?? 0.3,
+    amount: options.amount ?? 0.5,
     margin: options.margin,
   })
 

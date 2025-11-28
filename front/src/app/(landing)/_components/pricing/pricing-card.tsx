@@ -1,7 +1,7 @@
 'use client'
 
 import { cn } from '@/lib/utils'
-import { Check } from '@phosphor-icons/react'
+import { CheckIcon } from '@phosphor-icons/react'
 import { motion } from 'framer-motion'
 
 interface PricingCardProps {
@@ -60,7 +60,7 @@ export function PricingCard({
       <ul className='mb-8 flex-1 space-y-3'>
         {features.map((feature) => (
           <li key={feature} className='flex items-start gap-3'>
-            <Check
+            <CheckIcon
               weight='bold'
               className='mt-0.5 size-5 shrink-0 text-primary'
             />

@@ -10,7 +10,7 @@ export function HeroHeadline() {
       transition={{ duration: 0.6, delay: 0.3 }}
       className='mb-3 text-4xl leading-tight font-medium text-foreground sm:text-5xl md:text-6xl lg:text-7xl'
     >
-      Eliminate bugs. Automate reviews. Go Bugless.
+      Eliminate bugs. Automate reviews.
     </motion.h1>
   )
 }

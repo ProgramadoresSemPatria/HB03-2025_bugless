@@ -23,8 +23,7 @@ export function ProblemCard({
       initial={{ opacity: 0, y: 40 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: index * 0.15 }}
-      whileHover={{ y: -4, borderColor: 'var(--primary)' }}
-      className='rounded-xl border bg-surface p-8 transition-colors duration-300'
+      className='rounded-3xl border bg-background/2 p-8 backdrop-blur-xs transition-[background-color,box-shadow] duration-200 hover:bg-primary/7 hover:shadow-[0_0_30px_color-mix(in_oklab,var(--primary)_7%,transparent)]'
     >
       <IconComponent size={48} weight='duotone' className='mb-4 text-primary' />
       <h3 className='mb-3 text-xl font-semibold text-foreground'>{title}</h3>

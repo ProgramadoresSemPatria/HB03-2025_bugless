@@ -7,6 +7,8 @@ import { Footer } from '@/app/(landing)/_components/shared/footer'
 import { ScrollProgress } from '@/app/(landing)/_components/shared/scroll-progress'
 import { TerminalSection } from '@/app/(landing)/_components/terminal'
 import { Header } from '@/components/common/header'
+import { CTASection } from './(landing)/_components/cta'
+import { PreviewSection } from './(landing)/_components/preview'
 
 export default function Home() {
   return (
@@ -14,11 +16,15 @@ export default function Home() {
       <Header />
       <ScrollProgress />
       <HeroSection />
+      <PreviewSection />
       <ProblemSection />
       <TerminalSection />
       <FeaturesSection />
-      <ComparisonSection />
-      <PricingSection />
+      <div className='relative'>
+        <ComparisonSection />
+        <PricingSection />
+      </div>
+      <CTASection />
       <Footer />
     </main>
   )

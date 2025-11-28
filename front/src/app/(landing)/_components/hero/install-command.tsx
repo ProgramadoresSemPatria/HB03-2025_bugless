@@ -1,10 +1,10 @@
 'use client'
 
-import { Check, Copy } from '@phosphor-icons/react'
+import { CheckIcon, CopyIcon } from '@phosphor-icons/react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState } from 'react'
 
-const INSTALL_COMMAND = 'npm install -g bugless'
+const INSTALL_COMMAND = 'npm install -g bugless-cli'
 
 export function InstallCommand() {
   const [copied, setCopied] = useState(false)
@@ -35,7 +35,7 @@ export function InstallCommand() {
       className='mx-auto max-w-md'
     >
       <div className='flex items-center gap-2 rounded-lg border bg-surface p-2'>
-        <div className='flex flex-1 items-center gap-3 px-4 py-2'>
+        <div className='flex flex-1 items-center gap-3 px-2 py-2'>
           <span className='text-text-muted'>$</span>
           <code className='text-sm text-foreground sm:text-base'>
             {INSTALL_COMMAND}
@@ -62,7 +62,7 @@ export function InstallCommand() {
                 transition={{ duration: 0.15 }}
                 className='flex items-center gap-2'
               >
-                <Check weight='bold' className='size-4' />
+                <CheckIcon weight='bold' className='size-4' />
                 <span>Copied!</span>
               </motion.div>
             ) : (
@@ -74,7 +74,7 @@ export function InstallCommand() {
                 transition={{ duration: 0.15 }}
                 className='flex items-center gap-2'
               >
-                <Copy weight='bold' className='size-4' />
+                <CopyIcon weight='bold' className='size-4' />
                 <span>Copy</span>
               </motion.div>
             )}

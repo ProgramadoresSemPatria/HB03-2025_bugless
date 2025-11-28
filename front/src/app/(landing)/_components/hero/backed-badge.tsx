@@ -9,10 +9,10 @@ export function BackedBadge() {
       href='https://www.borderlesscoding.com/'
       target='_blank'
       rel='noopener noreferrer'
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.2 }}
-      className='mb-8 flex gap-2 rounded-full border bg-surface/30 px-4 py-2 text-sm text-text-secondary backdrop-blur-sm transition-all hover:scale-[102%] hover:border-foreground/50'
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5, delay: 1 }}
+      className='mb-8 flex gap-2 rounded-full border bg-surface/30 px-4 py-2 text-sm text-text-secondary backdrop-blur-sm transition-all hover:scale-[102%]'
     >
       Backed by
       <span className='flex gap-2 font-semibold text-foreground'>
