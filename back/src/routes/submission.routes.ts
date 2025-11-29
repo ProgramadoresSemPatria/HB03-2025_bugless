@@ -5,5 +5,6 @@ const submissionRouter = Router();
 
 submissionRouter.post("/", submissionController.createSubmission);
 submissionRouter.get("/:id", submissionController.getSubmissionById);
+submissionRouter.get("/:id/events", submissionController.getSubmissionEvents);
 
 export default submissionRouter;

@@ -6,6 +6,7 @@ import aiProvider from "../providers/ai.provider";
 import submissionService from "../services/submission.service";
 import { Submission } from "../generated/prisma/client";
 import reviewService from "../services/review.service";
+import notifyService, { EventType } from "../services/notify.service";
 
 class SubmissionWorker {
     private queue: Queue;
@@ -38,9 +39,21 @@ class SubmissionWorker {
             console.log(`[Worker] Review created: ${newReview.id}`);
 
             await submissionService.updateSubmissionStatus(submission.id, StatusSubmissionEnum.COMPLETED);
+            
+            // notify the client that the review is completed
+            notifyService.notify(submission.id, {
+                type: EventType.REVIEW_COMPLETED,
+                data: { review: newReview }
+            }, true);
 
         } catch (error) {
             await submissionService.updateSubmissionStatus(submissionId, StatusSubmissionEnum.FAILED);
+            
+            // notify the client that the review failed
+            notifyService.notify(submissionId, {
+                type: EventType.REVIEW_FAILED,
+                data: { error: "An error occurred during review" }
+            }, true);
         }
     }
 
