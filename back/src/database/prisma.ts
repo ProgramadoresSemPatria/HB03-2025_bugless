@@ -1,7 +1,7 @@
 import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../generated/prisma/client";
-import envLoader from "../services/env-loader.service";
+import { DATABASE_URL } from "../config/prisma.config";
 
 type PrismaGlobal = typeof globalThis & {
   prisma?: DatabaseService;
@@ -12,12 +12,11 @@ const globalForPrisma = globalThis as PrismaGlobal;
 class DatabaseService extends PrismaClient {
   private constructor() {
 
-    const databaseUrl = envLoader.getEnv("DATABASE_URL");
-    if (!databaseUrl) {
-      throw new Error("DATABASE_URL is not set");
+    if (!process.env.POSTGRES_USER || !process.env.POSTGRES_DB) {
+       throw new Error("Database credentials missing in .env");
     }
 
-    const pool = new Pool({ connectionString: databaseUrl });
+    const pool = new Pool({ connectionString: DATABASE_URL });
     const adapter = new PrismaPg(pool);
 
     super({ adapter });

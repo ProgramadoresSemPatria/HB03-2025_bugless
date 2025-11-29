@@ -1,6 +1,7 @@
 import prisma from "../database/prisma";
 import { CreateSubmissionSchema, SubmissionIdRule } from "../schemas/submission.schema";
 import { StatusSubmissionEnum, SubmissionModeEnum } from "../generated/prisma/enums";
+import submissionWorker from "../workers/submission.worker"
 
 class SubmissionService {
     async createSubmission(data: CreateSubmissionSchema) {
@@ -19,34 +20,48 @@ class SubmissionService {
             }   
         });
 
+        submissionWorker.processJob(submission);
+
         return submission;
     }
 
     async getSubmissionById(submissionData: SubmissionIdRule){
         const submission = await prisma.submission.findUnique({
-            where: { id: submissionData }
+            where: { id: submissionData },
+            include: {
+                statusSubmission: true,
+                reviews: true
+            }
         });
 
         if (!submission) {
             return null;
         }
 
-        const statusSubmission = await prisma.statusSubmission.findUnique({
-            where: { id: submission.statusSubmissionId }, select: { name: true }
-        });
-
-        if (!statusSubmission) {
-            return null;
-        }
-
-        const { statusSubmissionId, ...submissionWithoutStatus } = submission;
+        const { statusSubmissionId, statusSubmission, reviews, ...submissionRest } = submission;
 
         const submissionResponse = {
-            ...submissionWithoutStatus,
-            statusSubmission: statusSubmission.name
+            ...submissionRest,
+            statusSubmission: statusSubmission.name,
+            review: statusSubmission.name === StatusSubmissionEnum.COMPLETED ? (reviews[0] ?? null) : null
         }
 
         return submissionResponse;
+    }
+
+    async updateSubmissionStatus(submissionId: string, status: StatusSubmissionEnum) {
+        const statusRecord = await prisma.statusSubmission.findFirst({
+            where: { name: status }
+        });
+
+        if (!statusRecord) {
+            return null;
+        }
+
+        return await prisma.submission.update({
+            where: { id: submissionId },
+            data: { statusSubmissionId: statusRecord.id }
+        });
     }
 }
 

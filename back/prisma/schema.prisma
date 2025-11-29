@@ -85,7 +85,7 @@ model Subscription {
   @@map("subscription")
 }
 
-enum SubmissionMode {
+enum SubmissionModeEnum {
   PR_DIFF
   UNCOMMITTED
   COMMIT
@@ -110,6 +110,7 @@ model StatusSubmission {
 model Submission {
   id                String            @id @default(ulid())
   codeContent       String            @map("code_content") @db.Text
+  submissionMode    SubmissionModeEnum @map("submission_mode")
   createdAt         DateTime          @default(now()) @map("created_at")
   userId            String            @map("user_id")
   projectId         String            @map("project_id")

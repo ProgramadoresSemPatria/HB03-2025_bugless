@@ -11,6 +11,7 @@ class SubmissionController {
             const dataSubmission = createSubmissionSchema.parse(req.body);
 
             const submission = await submissionService.createSubmission(dataSubmission);
+
             if (!submission) {
                 return HttpHelper.notFound(res, "Submission not found");
             }

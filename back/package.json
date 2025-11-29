@@ -4,7 +4,11 @@
   "main": "server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsx watch server.ts"
+    "dev": "tsx watch server.ts",
+    "prisma:studio": "prisma studio --config src/config/prisma.config.ts",
+    "prisma:migrate": "prisma migrate dev --config src/config/prisma.config.ts",
+    "prisma:generate": "prisma generate --config src/config/prisma.config.ts",
+    "prisma:push": "prisma db push --config src/config/prisma.config.ts"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +20,7 @@
     "@prisma/client": "^7.0.1",
     "@types/express": "^5.0.5",
     "bcrypt": "^6.0.0",
+    "bullmq": "^5.65.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.16.3"

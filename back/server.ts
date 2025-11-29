@@ -5,7 +5,7 @@ import authRouter from "./src/routes/auth.routes";
 import projectRouter from "./src/routes/project.routes";
 import submissionRouter from "./src/routes/submission.routes";
 
-const PORT = envLoader.getEnv("PORT")
+const PORT = envLoader.getEnv("PORT") || "3000";
 
 const app = express();
 
