@@ -8,7 +8,8 @@
     "prisma:studio": "prisma studio --config src/config/prisma.config.ts",
     "prisma:migrate": "prisma migrate dev --config src/config/prisma.config.ts",
     "prisma:generate": "prisma generate --config src/config/prisma.config.ts",
-    "prisma:push": "prisma db push --config src/config/prisma.config.ts"
+    "prisma:push": "prisma db push --config src/config/prisma.config.ts",
+    "prisma:seed": "tsx prisma/seed.ts"
   },
   "keywords": [],
   "author": "",

@@ -14,7 +14,7 @@ const defaults: ConfigSchema = {
     '.git/**',
   ],
   maxFileSizeKb: 500,
-  useMock: true,
+  useMock: false,  // Use real API by default now that backend integration is ready
 };
 
 class ConfigService {
@@ -71,7 +71,7 @@ class ConfigService {
     if (envMock !== undefined) {
       return envMock === 'true';
     }
-    return this.store.get('useMock') ?? true;
+    return this.store.get('useMock') ?? false;  // Default to real API
   }
 
   setUseMock(useMock: boolean): void {

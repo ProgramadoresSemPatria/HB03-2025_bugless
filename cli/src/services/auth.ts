@@ -30,7 +30,7 @@ async function checkLoginStatus(sessionId: string): Promise<TokenResponse | null
 
   try {
     const response = await fetch(`${apiUrl}/auth/cli-status?sid=${sessionId}`);
-    const data: ApiResponse = await response.json();
+    const data = await response.json() as ApiResponse;
 
     if (!data.success || !data.data) {
       return null;

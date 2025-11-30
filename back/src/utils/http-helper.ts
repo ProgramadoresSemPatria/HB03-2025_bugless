@@ -44,10 +44,10 @@ export class HttpHelper {
         });
     }
 
-    static serverError(res: Response) {
+    static serverError(res: Response, message: string = "Internal Server Error") {
             return res.status(500).json({
             success: false,
-            message: "Internal Server Error"
+            message
         });
     }
 
