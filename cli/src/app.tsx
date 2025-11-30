@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Text, useApp } from 'ink';
-import { Header, Menu, NotGitRepoError, Loading } from './components/index.js';
+import { Header, Menu, NotGitRepoError, Loading, Login } from './components/index.js';
 import { BranchReview } from './modes/branch-review.js';
 import { UncommittedReview } from './modes/uncommitted-review.js';
 import { CommitReview } from './modes/commit-review.js';
 import { CustomReview } from './modes/custom-review.js';
 import { gitService } from './services/git.js';
 import { configService } from './services/config.js';
+import { isLoggedIn } from './services/auth.js';
 import type { ReviewMode, PresetName } from './types/review.js';
 
 export interface AppProps {
@@ -21,7 +22,7 @@ export interface AppProps {
   };
 }
 
-type AppState = 'checking' | 'not-git-repo' | 'menu' | 'review';
+type AppState = 'checking' | 'not-git-repo' | 'auth' | 'menu' | 'review';
 
 export function App({
   mode = 'interactive',
@@ -58,12 +59,18 @@ export function App({
     }
   }, [configAction, exit]);
 
-  // Initial git check
+  // Initial git and auth check
   useEffect(() => {
     async function check() {
       const isGit = await gitService.isGitRepo();
       if (!isGit) {
         setAppState('not-git-repo');
+        return;
+      }
+
+      // Check authentication
+      if (!isLoggedIn()) {
+        setAppState('auth');
         return;
       }
 
@@ -75,6 +82,14 @@ export function App({
     }
     check();
   }, [mode]);
+
+  const handleLoginSuccess = () => {
+    if (mode === 'interactive') {
+      setAppState('menu');
+    } else {
+      setAppState('review');
+    }
+  };
 
   const handleModeSelect = (selected: ReviewMode) => {
     setSelectedMode(selected);
@@ -102,6 +117,16 @@ export function App({
       <Box flexDirection="column" padding={1}>
         <Header />
         <NotGitRepoError />
+      </Box>
+    );
+  }
+
+  // Auth state
+  if (appState === 'auth') {
+    return (
+      <Box flexDirection="column" padding={1}>
+        <Header />
+        <Login onSuccess={handleLoginSuccess} />
       </Box>
     );
   }
