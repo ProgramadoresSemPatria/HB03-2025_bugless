@@ -90,7 +90,7 @@ export function ProblemSection() {
             initial={{ opacity: 0, y: 60 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8 }}
-            className='mt-2.5 max-w-prose text-xl text-text-secondary'
+            className='mt-2.5 max-w-prose text-lg text-text-secondary'
           >
             Every developer knows the frustration: code that looked perfect
             breaks in production. Manual reviews miss edge cases. Static linters

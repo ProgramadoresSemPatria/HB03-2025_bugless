@@ -1,3 +1,5 @@
+export { BentoGrid } from './bento-grid'
 export { ConnectionGraph } from './connection-graph'
 export { FeatureCard } from './feature-card'
+export { FeaturesHeader } from './features-header'
 export { FeaturesSection } from './features-section'

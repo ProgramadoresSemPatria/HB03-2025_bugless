@@ -111,7 +111,7 @@ export function ConnectionGraph() {
   return (
     <canvas
       ref={canvasRef}
-      className='absolute inset-0 h-full w-full opacity-30'
+      className='absolute inset-0 h-full w-full opacity-60'
     />
   )
 }

@@ -1,48 +1,40 @@
 'use client'
 
-import { cn } from '@/lib/utils'
-import type { Icon } from '@phosphor-icons/react'
+import { Icon } from '@phosphor-icons/react'
 import { motion } from 'framer-motion'
 
 interface FeatureCardProps {
   icon: Icon
   title: string
   description: string
-  index: number
-  isInView: boolean
+  children?: React.ReactNode
   className?: string
+  delay?: number
+  isInView: boolean
 }
 
 export function FeatureCard({
   icon: IconComponent,
   title,
   description,
-  index,
+  children,
+  className = '',
+  delay = 0,
   isInView,
-  className,
 }: FeatureCardProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{
-        duration: 0.5,
-        delay: index * 0.08,
-        ease: [0.21, 1.02, 0.73, 1],
-      }}
-      className={cn(
-        'group flex flex-col rounded-2xl p-6',
-        'border border-border/50 bg-surface',
-        'hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5',
-        'transition-all duration-300 ease-out',
-        className,
-      )}
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={isInView ? { opacity: 1, scale: 1 } : {}}
+      transition={{ duration: 0.5, delay }}
+      className={`relative overflow-hidden rounded-3xl border bg-linear-to-br from-primary/20 via-primary/5 to-background p-6 transition-colors hover:border-primary/50 ${className}`}
     >
-      <IconComponent size={36} weight='duotone' className='mb-4 text-primary' />
-      <h3 className='mb-2 text-lg font-semibold text-foreground'>{title}</h3>
-      <p className='text-sm leading-relaxed text-text-secondary'>
-        {description}
-      </p>
+      <div className='mb-4 inline-flex size-12 items-center justify-center rounded-xl bg-primary/10'>
+        <IconComponent size={24} weight='bold' className='text-primary' />
+      </div>
+      <h3 className='mb-2 text-xl font-bold'>{title}</h3>
+      <p className='mb-6 text-pretty text-text-secondary'>{description}</p>
+      {children}
     </motion.div>
   )
 }

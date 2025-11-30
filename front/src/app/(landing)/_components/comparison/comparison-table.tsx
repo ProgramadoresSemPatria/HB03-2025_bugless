@@ -84,7 +84,7 @@ export function ComparisonSection() {
     <section
       id='compare'
       ref={sectionRef}
-      className='sticky top-0 bg-surface py-32'
+      className='sticky top-0 scroll-mt-20 bg-surface py-32'
     >
       <motion.div
         ref={ref}
