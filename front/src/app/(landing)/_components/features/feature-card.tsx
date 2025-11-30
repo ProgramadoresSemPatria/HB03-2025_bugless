@@ -27,7 +27,7 @@ export function FeatureCard({
       initial={{ opacity: 0, scale: 0.95 }}
       animate={isInView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.5, delay }}
-      className={`relative overflow-hidden rounded-3xl border bg-linear-to-br from-primary/20 via-primary/5 to-background p-6 transition-colors hover:border-primary/50 ${className}`}
+      className={`relative overflow-hidden rounded-3xl border p-6 transition-colors hover:border-primary/50 ${className}`}
     >
       <div className='mb-4 inline-flex size-12 items-center justify-center rounded-xl bg-primary/10'>
         <IconComponent size={24} weight='bold' className='text-primary' />
