@@ -25,3 +25,21 @@ export const getUserByEmailSchema = z.object({
 });
 
 export type GetUserByEmailSchema = z.infer<typeof getUserByEmailSchema>;
+
+// Login schemas
+export const loginSchema = z.object({
+    email: emailRule,
+    password: passwordRule,
+});
+
+export type LoginSchema = z.infer<typeof loginSchema>;
+
+export const cliSessionSchema = z.object({
+    sessionId: z.string().uuid(),
+});
+
+export type CliSessionSchema = z.infer<typeof cliSessionSchema>;
+
+export const cliLoginSchema = loginSchema.merge(cliSessionSchema);
+
+export type CliLoginSchema = z.infer<typeof cliLoginSchema>;
