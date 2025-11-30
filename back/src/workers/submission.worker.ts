@@ -7,6 +7,7 @@ import submissionService from "../services/submission.service";
 import { Submission } from "../generated/prisma/client";
 import reviewService from "../services/review.service";
 import notifyService, { EventType } from "../services/notify.service";
+import githubWebhookService from "../services/github-webhook.service";
 
 class SubmissionWorker {
     private queue: Queue;
@@ -52,14 +53,20 @@ class SubmissionWorker {
             console.log(`[Worker] Review created: ${newReview.id}`);
 
             await submissionService.updateSubmissionStatus(submission.id, StatusSubmissionEnum.COMPLETED);
-            
+
             // notify the client that the review is completed
             notifyService.notify(submission.id, {
                 type: EventType.REVIEW_COMPLETED,
                 data: { review: newReview }
             }, true);
 
+            // Post review comment to GitHub PR if this submission is from GitHub
+            githubWebhookService.postReviewComment(submission.id, newReview).catch((error) => {
+                console.error(`[Worker] Failed to post GitHub comment:`, error);
+            });
+
         } catch (error) {
+            console.error(`[Worker] Error processing submission ${submissionId}:`, error);
             await submissionService.updateSubmissionStatus(submissionId, StatusSubmissionEnum.FAILED);
 
             // notify the client that the review failed
@@ -67,6 +74,11 @@ class SubmissionWorker {
                 type: EventType.REVIEW_FAILED,
                 data: { error: "An error occurred during review" }
             }, true);
+
+            // Mark GitHub Check Run as failed if this submission is from GitHub
+            githubWebhookService.markReviewFailed(submissionId, "An error occurred during code review").catch((err) => {
+                console.error(`[Worker] Failed to mark GitHub check as failed:`, err);
+            });
         }
     }
 
