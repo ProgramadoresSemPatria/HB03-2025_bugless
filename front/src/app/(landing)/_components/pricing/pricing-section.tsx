@@ -1,11 +1,9 @@
 'use client'
 
 import { useSectionReveal } from '@/app/(landing)/_hooks/use-section-reveal'
-import { MotionDiv } from '@/components/motion'
 import { Container } from '../shared/container'
-import { SectionDescription } from '../shared/section-description'
-import { SectionHeading } from '../shared/section-heading'
 import { PricingCard } from './pricing-card'
+import { PricingHeader } from './pricing-header'
 
 const plans = [
   {
@@ -63,13 +61,7 @@ export function PricingSection() {
       className='relative z-10 scroll-mt-20 rounded-t-3xl bg-background py-32 shadow-[0_-20px_50px_rgba(0,0,0,0.3)]'
     >
       <Container>
-        <MotionDiv isInView={isInView}>
-          <SectionHeading>Simple, transparent pricing</SectionHeading>
-          <SectionDescription>
-            Start free, upgrade when you need more. No hidden fees, no
-            surprises.
-          </SectionDescription>
-        </MotionDiv>
+        <PricingHeader isInView={isInView} />
 
         <div className='mx-auto grid max-w-6xl gap-10 md:grid-cols-3'>
           {plans.map((plan) => (
