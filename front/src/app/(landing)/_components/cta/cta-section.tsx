@@ -1,28 +1,26 @@
 'use client'
 
+import { MotionDiv } from '@/components/motion'
 import { Button } from '@/components/ui/button'
-import { motion } from 'framer-motion'
+import { useSectionReveal } from '../../_hooks/use-section-reveal'
 import { Container } from '../shared/container'
+import { SectionDescription } from '../shared/section-description'
+import { SectionHeading } from '../shared/section-heading'
 
 export function CTASection() {
+  const { ref, isInView } = useSectionReveal()
+
   return (
-    <section className='border-t py-24'>
+    <section ref={ref} className='border-t py-24'>
       <Container className='text-center'>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <h2 className='mb-4 text-4xl text-foreground md:text-5xl'>
-            Ready to catch more bugs?
-          </h2>
-          <p className='mx-auto mb-8 max-w-xl text-lg text-text-secondary'>
+        <MotionDiv isInView={isInView} className='mb-0'>
+          <SectionHeading>Ready to catch more bugs?</SectionHeading>
+          <SectionDescription className='mb-6'>
             Get started with Bugless for free
-          </p>
+          </SectionDescription>
 
           <Button>Get started</Button>
-        </motion.div>
+        </MotionDiv>
       </Container>
     </section>
   )

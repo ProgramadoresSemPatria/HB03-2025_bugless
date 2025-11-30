@@ -203,225 +203,222 @@ export function TerminalDemo({ isInView = true }: TerminalDemoProps) {
   const showApplying = ['applying-fixes', 'done'].includes(phase)
 
   return (
-    <div className='overflow-hidden rounded-xl border-2 bg-background'>
-      <div className='flex items-center gap-2 border-b bg-surface-elevated px-4 py-3'>
-        <div className='size-3 rounded-full bg-error' />
-        <div className='size-3 rounded-full bg-warning' />
-        <div className='size-3 rounded-full bg-success' />
-        <span className='ml-2 font-mono text-xs text-text-muted'>
-          bugless review
-        </span>
-      </div>
-
-      <div className='h-[520px] overflow-hidden p-5 font-mono text-sm'>
-        <div className='flex items-center text-text-muted'>
-          <span>$ </span>
-          <span className='text-foreground'>{typedCommand}</span>
-          {phase === 'typing-command' && (
-            <motion.span
-              animate={{ opacity: [1, 0] }}
-              transition={{ duration: 0.5, repeat: Infinity }}
-              className='ml-px inline-block h-4 w-2 bg-primary'
-            />
-          )}
-          {phase !== 'typing-command' &&
-            typedCommand.length === command.length && (
-              <span className='ml-2 text-xs text-text-muted/50'>↵</span>
-            )}
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay: 0.2 }}
+      className='mx-auto max-w-3xl'
+    >
+      <div className='overflow-hidden rounded-xl border-2 bg-background'>
+        <div className='flex items-center gap-2 border-b bg-surface-elevated px-4 py-3'>
+          <div className='size-3 rounded-full bg-error' />
+          <div className='size-3 rounded-full bg-warning' />
+          <div className='size-3 rounded-full bg-success' />
+          <span className='ml-2 font-mono text-xs text-text-muted'>
+            bugless review
+          </span>
         </div>
-
-        <AnimatePresence>
-          {showPrompt && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className='mt-3 text-foreground'
-            >
-              ? What would you like to review?
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <AnimatePresence>
-          {showOptions && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className='mt-1 space-y-0.5'
-            >
-              {reviewOptions.map((option, i) => (
-                <div
-                  key={i}
-                  className={`flex items-center transition-colors duration-100 ${
-                    i === selectedOption
-                      ? 'text-primary'
-                      : 'text-text-secondary'
-                  }`}
-                >
-                  <span className='w-4 text-primary'>
-                    {i === selectedOption ? '›' : ' '}
+        <div className='h-[520px] overflow-hidden p-5 font-mono text-sm'>
+          <div className='flex items-center text-text-muted'>
+            <span>$ </span>
+            <span className='text-foreground'>{typedCommand}</span>
+            {phase === 'typing-command' && (
+              <motion.span
+                animate={{ opacity: [1, 0] }}
+                transition={{ duration: 0.5, repeat: Infinity }}
+                className='ml-px inline-block h-4 w-2 bg-primary'
+              />
+            )}
+            {phase !== 'typing-command' &&
+              typedCommand.length === command.length && (
+                <span className='ml-2 text-xs text-text-muted/50'>↵</span>
+              )}
+          </div>
+          <AnimatePresence>
+            {showPrompt && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className='mt-3 text-foreground'
+              >
+                ? What would you like to review?
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <AnimatePresence>
+            {showOptions && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className='mt-1 space-y-0.5'
+              >
+                {reviewOptions.map((option, i) => (
+                  <div
+                    key={i}
+                    className={`flex items-center transition-colors duration-100 ${
+                      i === selectedOption
+                        ? 'text-primary'
+                        : 'text-text-secondary'
+                    }`}
+                  >
+                    <span className='w-4 text-primary'>
+                      {i === selectedOption ? '›' : ' '}
+                    </span>
+                    <span>{option}</span>
+                    {i === selectedOption && phase === 'selected-option' && (
+                      <span className='ml-2 text-xs text-text-muted/50'>↵</span>
+                    )}
+                  </div>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <AnimatePresence>
+            {showScanning && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className='mt-3'
+              >
+                <div className='flex items-center gap-2 text-primary'>
+                  <span>\×/</span>
+                  <span>
+                    BugLess • Analyzing{' '}
+                    {scanProgress < 3 ? `${scanProgress + 1}/3` : '3'} files
+                    {scanProgress < 3 && (
+                      <motion.span
+                        animate={{ opacity: [1, 0.3] }}
+                        transition={{ duration: 0.4, repeat: Infinity }}
+                      >
+                        ...
+                      </motion.span>
+                    )}
+                    {scanProgress >= 3 && (
+                      <span className='ml-1 text-success'>✓</span>
+                    )}
                   </span>
-                  <span>{option}</span>
-                  {i === selectedOption && phase === 'selected-option' && (
-                    <span className='ml-2 text-xs text-text-muted/50'>↵</span>
-                  )}
                 </div>
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <AnimatePresence>
-          {showScanning && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className='mt-3'
-            >
-              <div className='flex items-center gap-2 text-primary'>
-                <span>\×/</span>
-                <span>
-                  BugLess • Analyzing{' '}
-                  {scanProgress < 3 ? `${scanProgress + 1}/3` : '3'} files
-                  {scanProgress < 3 && (
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <AnimatePresence>
+            {showResults && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className='mt-3 space-y-2'
+              >
+                <div className='space-y-0.5'>
+                  <div className='text-error'>
+                    ✖ CRITICAL src/api/users.ts:42
+                  </div>
+                  <div className='pl-4 text-xs text-text-secondary'>
+                    SQL injection vulnerability in query builder
+                  </div>
+                  <div className='pl-4 text-xs text-primary/80'>
+                    💡 Use parameterized queries instead
+                  </div>
+                </div>
+                <div className='space-y-0.5'>
+                  <div className='text-warning'>
+                    ⚠ WARNING src/utils/parser.ts:18
+                  </div>
+                  <div className='pl-4 text-xs text-text-secondary'>
+                    Unhandled promise rejection possible
+                  </div>
+                  <div className='pl-4 text-xs text-primary/80'>
+                    💡 Add try/catch or .catch() handler
+                  </div>
+                </div>
+                <div className='border-t/30 mt-2 pt-2'>
+                  <div className='text-foreground'>
+                    \×/ Found: 1 critical, 1 warning, 0 info
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <AnimatePresence>
+            {showActions && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className='mt-3'
+              >
+                <div className='flex items-center gap-4 text-xs'>
+                  <span
+                    className={`rounded px-2 py-0.5 ${typedAction === 'a' ? 'bg-primary text-primary-foreground' : 'border/50 text-text-muted'}`}
+                  >
+                    [A] Apply all
+                  </span>
+                  <span className='border/50 rounded px-2 py-0.5 text-text-muted'>
+                    [F] Apply one
+                  </span>
+                  <span className='border/50 rounded px-2 py-0.5 text-text-muted'>
+                    [S] Skip
+                  </span>
+                </div>
+                {phase === 'typing-action' && !typedAction && (
+                  <div className='mt-2 flex items-center'>
+                    <span className='text-text-muted'>› </span>
                     <motion.span
-                      animate={{ opacity: [1, 0.3] }}
-                      transition={{ duration: 0.4, repeat: Infinity }}
-                    >
-                      ...
-                    </motion.span>
-                  )}
-                  {scanProgress >= 3 && (
-                    <span className='ml-1 text-success'>✓</span>
-                  )}
-                </span>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <AnimatePresence>
-          {showResults && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className='mt-3 space-y-2'
-            >
-              <div className='space-y-0.5'>
-                <div className='text-error'>
-                  ✖ CRITICAL src/api/users.ts:42
-                </div>
-                <div className='pl-4 text-xs text-text-secondary'>
-                  SQL injection vulnerability in query builder
-                </div>
-                <div className='pl-4 text-xs text-primary/80'>
-                  💡 Use parameterized queries instead
-                </div>
-              </div>
-
-              <div className='space-y-0.5'>
-                <div className='text-warning'>
-                  ⚠ WARNING src/utils/parser.ts:18
-                </div>
-                <div className='pl-4 text-xs text-text-secondary'>
-                  Unhandled promise rejection possible
-                </div>
-                <div className='pl-4 text-xs text-primary/80'>
-                  💡 Add try/catch or .catch() handler
-                </div>
-              </div>
-
-              <div className='border-t/30 mt-2 pt-2'>
-                <div className='text-foreground'>
-                  \×/ Found: 1 critical, 1 warning, 0 info
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <AnimatePresence>
-          {showActions && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className='mt-3'
-            >
-              <div className='flex items-center gap-4 text-xs'>
-                <span
-                  className={`rounded px-2 py-0.5 ${typedAction === 'a' ? 'bg-primary text-primary-foreground' : 'border/50 text-text-muted'}`}
-                >
-                  [A] Apply all
-                </span>
-                <span className='border/50 rounded px-2 py-0.5 text-text-muted'>
-                  [F] Apply one
-                </span>
-                <span className='border/50 rounded px-2 py-0.5 text-text-muted'>
-                  [S] Skip
-                </span>
-              </div>
-
-              {phase === 'typing-action' && !typedAction && (
-                <div className='mt-2 flex items-center'>
-                  <span className='text-text-muted'>› </span>
-                  <motion.span
-                    animate={{ opacity: [1, 0] }}
-                    transition={{ duration: 0.5, repeat: Infinity }}
-                    className='inline-block h-4 w-2 bg-primary'
-                  />
-                </div>
-              )}
-              {typedAction && (
-                <div className='mt-2 text-text-muted'>
-                  › <span className='text-foreground'>{typedAction}</span>
-                  <span className='ml-2 text-xs text-text-muted/50'>↵</span>
-                </div>
-              )}
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <AnimatePresence>
-          {showApplying && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className='mt-3 space-y-1'
-            >
-              {fixProgress >= 1 && (
-                <motion.div
-                  initial={{ opacity: 0, x: -5 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  className='flex items-center gap-2 text-success'
-                >
-                  <span>✓</span>
-                  <span>Fixed: src/api/users.ts:42</span>
-                </motion.div>
-              )}
-              {fixProgress >= 2 && (
-                <motion.div
-                  initial={{ opacity: 0, x: -5 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  className='flex items-center gap-2 text-success'
-                >
-                  <span>✓</span>
-                  <span>Fixed: src/utils/parser.ts:18</span>
-                </motion.div>
-              )}
-              {fixProgress >= 2 && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.3 }}
-                  className='border-t/30 mt-2 pt-2 font-medium text-foreground'
-                >
-                  \×/ All fixes applied successfully!
-                </motion.div>
-              )}
-            </motion.div>
-          )}
-        </AnimatePresence>
+                      animate={{ opacity: [1, 0] }}
+                      transition={{ duration: 0.5, repeat: Infinity }}
+                      className='inline-block h-4 w-2 bg-primary'
+                    />
+                  </div>
+                )}
+                {typedAction && (
+                  <div className='mt-2 text-text-muted'>
+                    › <span className='text-foreground'>{typedAction}</span>
+                    <span className='ml-2 text-xs text-text-muted/50'>↵</span>
+                  </div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <AnimatePresence>
+            {showApplying && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className='mt-3 space-y-1'
+              >
+                {fixProgress >= 1 && (
+                  <motion.div
+                    initial={{ opacity: 0, x: -5 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className='flex items-center gap-2 text-success'
+                  >
+                    <span>✓</span>
+                    <span>Fixed: src/api/users.ts:42</span>
+                  </motion.div>
+                )}
+                {fixProgress >= 2 && (
+                  <motion.div
+                    initial={{ opacity: 0, x: -5 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className='flex items-center gap-2 text-success'
+                  >
+                    <span>✓</span>
+                    <span>Fixed: src/utils/parser.ts:18</span>
+                  </motion.div>
+                )}
+                {fixProgress >= 2 && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.3 }}
+                    className='border-t/30 mt-2 pt-2 font-medium text-foreground'
+                  >
+                    \×/ All fixes applied successfully!
+                  </motion.div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
