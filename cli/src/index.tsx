@@ -3,6 +3,7 @@ import { render } from 'ink';
 import meow from 'meow';
 import { App } from './app.js';
 import { logout } from './services/auth.js';
+import { configService } from './services/config.js';
 import type { ReviewMode, PresetName } from './types/review.js';
 
 const cli = meow(
@@ -30,6 +31,10 @@ const cli = meow(
     $ bugless config --api-key <key>   Set API key
     $ bugless config --api-url <url>   Set API URL
     $ bugless config --show            Show current config
+
+  API Mode
+    --mock                Use mock API (for testing without backend)
+                          Default: uses real backend API
 
   Auth
     $ bugless logout                   Logout and clear stored credentials
@@ -67,6 +72,10 @@ const cli = meow(
       show: {
         type: 'boolean',
       },
+      mock: {
+        type: 'boolean',
+        default: false,
+      },
     },
   }
 );
@@ -92,6 +101,15 @@ function validatePreset(preset: string): PresetName {
 
 const mode = getMode();
 const preset = validatePreset(cli.flags.preset);
+
+// Handle --real and --mock flags (default is now REAL API)
+if (cli.flags.mock) {
+  configService.setUseMock(true);
+  console.log('🎭 Using MOCK API');
+} else {
+  // Force real API as default
+  configService.setUseMock(false);
+}
 
 // Handle logout command
 const isLogoutCommand = cli.input[0] === 'logout';

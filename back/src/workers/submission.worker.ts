@@ -24,7 +24,10 @@ class SubmissionWorker {
         const submissionId = job.data.submission.id;
 
         try {
-            console.log(`[Worker] Processing submission: ${submissionId}`);
+            console.log("\n========================================");
+            console.log(`[Worker] 🔄 Processando submission: ${submissionId}`);
+            console.log("========================================");
+
             const submission = await prisma.submission.findUnique({ where: { id: submissionId } });
             if (!submission) throw new Error("Submission not found");
 
@@ -49,19 +52,24 @@ class SubmissionWorker {
             });
 
             if (!newReview) throw new Error("Review not created");
-            console.log(`[Worker] Review created: ${newReview.id}`);
+            console.log(`[Worker] Review criado: ${newReview.id}`);
 
             await submissionService.updateSubmissionStatus(submission.id, StatusSubmissionEnum.COMPLETED);
-            
+            console.log(`[Worker] Notificando cliente via SSE...`);
+
             // notify the client that the review is completed
             notifyService.notify(submission.id, {
                 type: EventType.REVIEW_COMPLETED,
                 data: { review: newReview }
             }, true);
 
+            console.log(`[Worker] Processo concluído!`);
+            console.log("========================================\n");
+
         } catch (error) {
+            console.error(`[Worker] Erro no processamento:`, error);
             await submissionService.updateSubmissionStatus(submissionId, StatusSubmissionEnum.FAILED);
-            
+
             // notify the client that the review failed
             notifyService.notify(submissionId, {
                 type: EventType.REVIEW_FAILED,

@@ -32,7 +32,9 @@ export function useReview(): UseReviewReturn {
 
     try {
       const useMock = configService.isUsingMock();
+      process.stderr.write(`[useReview] useMock: ${useMock}\n`);
       const api = createReviewAPI(useMock);
+      process.stderr.write(`[useReview] API criada: ${useMock ? 'MockReviewAPI' : 'RealReviewAPI'}\n`);
 
       const reviewResult = await api.submitReview(diff, options);
       setResult(reviewResult);

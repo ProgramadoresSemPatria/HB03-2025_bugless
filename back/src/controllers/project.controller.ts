@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createProjectSchema, projectIdSchema, updateProjectSchema } from "../schemas/project.schema";
+import { createProjectSchema, findOrCreateProjectSchema, projectIdSchema, updateProjectSchema } from "../schemas/project.schema";
 import projectService from "../services/project.service";
 import userService from "../services/user.service";
 import { ZodError, flattenError } from "zod";
@@ -104,7 +104,7 @@ class ProjectController {
         try {
             const dataProjectId = projectIdSchema.parse(req.params);
             const project = await projectService.deleteProject(dataProjectId);
-        
+
         if (!project) {
             return HttpHelper.notFound(res, "Project not found");
         }
@@ -115,6 +115,37 @@ class ProjectController {
                 return HttpHelper.badRequest(res, "Validation error", flattenError(error));
             }
             console.error("Error deleting project:", error);
+            return HttpHelper.serverError(res);
+        }
+    }
+
+    async findOrCreateByRepo(req: Request, res: Response) {
+        try {
+            console.log("\n[Project] 🔍 Find or Create projeto");
+            console.log("[Project] Repo URL:", req.body.repositoryUrl);
+            console.log("[Project] Nome:", req.body.name);
+
+            const data = findOrCreateProjectSchema.parse(req.body);
+
+            const user = await userService.getUserById(data.userId);
+            if (!user) {
+                return HttpHelper.notFound(res, "User not found");
+            }
+
+            const result = await projectService.findOrCreateByRepo(data);
+
+            if (result.created) {
+                console.log("[Project] ✅ Projeto CRIADO:", result.project.id);
+                return HttpHelper.created(res, result.project, "Project created successfully");
+            }
+
+            console.log("[Project] ✅ Projeto ENCONTRADO:", result.project.id);
+            return HttpHelper.success(res, result.project, "Project found");
+        } catch (error) {
+            if (error instanceof ZodError) {
+                return HttpHelper.badRequest(res, "Validation error", flattenError(error));
+            }
+            console.error("[Project] ❌ Erro:", error);
             return HttpHelper.serverError(res);
         }
     }

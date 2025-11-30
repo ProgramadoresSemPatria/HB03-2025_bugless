@@ -1,5 +1,5 @@
 import prisma from "../database/prisma";
-import { CreateProjectSchema, ProjectIdSchema, UpdateProjectSchema } from "../schemas/project.schema";
+import { CreateProjectSchema, FindOrCreateProjectSchema, ProjectIdSchema, UpdateProjectSchema } from "../schemas/project.schema";
 import { GetUserByIdSchema } from "../schemas/user.schema";
 
 class ProjectService {
@@ -70,6 +70,31 @@ class ProjectService {
         }
 
         return project
+    }
+
+    async findOrCreateByRepo(data: FindOrCreateProjectSchema) {
+        // Try to find existing project with same repositoryUrl and userId
+        const existingProject = await prisma.project.findFirst({
+            where: {
+                repositoryUrl: data.repositoryUrl,
+                userId: data.userId
+            }
+        });
+
+        if (existingProject) {
+            return { project: existingProject, created: false };
+        }
+
+        // Create new project
+        const newProject = await prisma.project.create({
+            data: {
+                name: data.name,
+                repositoryUrl: data.repositoryUrl,
+                userId: data.userId,
+            }
+        });
+
+        return { project: newProject, created: true };
     }
 }
 

@@ -20,5 +20,13 @@ export const projectIdSchema = z.object({
   id: ulidRule
 });
 
+export const findOrCreateProjectSchema = z.object({
+  userId: ulidRule,
+  repositoryUrl: z.string().min(1, "Repository URL is required"),
+  name: z.string().min(1, "Project name is required"),
+});
+
 export type CreateProjectSchema = z.infer<typeof createProjectSchema>;
-export type UpdateProjectSchema = z.infer<typeof updateProjectSchema>;export type ProjectIdSchema = z.infer<typeof projectIdSchema>;
+export type UpdateProjectSchema = z.infer<typeof updateProjectSchema>;
+export type ProjectIdSchema = z.infer<typeof projectIdSchema>;
+export type FindOrCreateProjectSchema = z.infer<typeof findOrCreateProjectSchema>;

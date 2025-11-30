@@ -52,6 +52,16 @@ export class GitService {
     return status.current || 'HEAD';
   }
 
+  async getRemoteUrl(): Promise<string | null> {
+    try {
+      const remotes = await this.git.getRemotes(true);
+      const origin = remotes.find(r => r.name === 'origin');
+      return origin?.refs?.fetch || origin?.refs?.push || null;
+    } catch {
+      return null;
+    }
+  }
+
   async getRecentCommits(count = 10): Promise<GitCommit[]> {
     const log = await this.git.log({ maxCount: count });
     return log.all.map(commit => ({
