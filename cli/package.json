@@ -6,7 +6,9 @@
   "bin": {
     "bugless": "dist/index.js"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ProgramadoresSemPatria/HB03-2025_bugless.git"
@@ -30,6 +32,7 @@
     "ink": "^5.0.1",
     "ink-select-input": "^6.2.0",
     "meow": "^13.2.0",
+    "open": "^11.0.0",
     "react": "^18.3.1",
     "simple-git": "^3.27.0",
     "zod": "^3.23.8"

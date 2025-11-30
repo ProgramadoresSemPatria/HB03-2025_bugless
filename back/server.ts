@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import cors from "cors";
 import statusSubmissionRouter from "./src/routes/status-submission.routes";
 import envLoader from "./src/services/env-loader.service";
 import authRouter from "./src/routes/auth.routes";
@@ -6,9 +7,14 @@ import projectRouter from "./src/routes/project.routes";
 import submissionRouter from "./src/routes/submission.routes";
 
 const PORT = envLoader.getEnv("PORT") || "3000";
+const FRONTEND_URL = envLoader.getEnv("FRONTEND_URL") || "http://localhost:3001";
 
 const app = express();
 
+app.use(cors({
+  origin: FRONTEND_URL,
+  credentials: true,
+}));
 app.use(express.json());
 
 app.use("/status-submissions", statusSubmissionRouter);

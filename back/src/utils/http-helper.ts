@@ -50,5 +50,12 @@ export class HttpHelper {
             message: "Internal Server Error"
         });
     }
+
+    static unauthorized(res: Response, message: string = "Unauthorized") {
+        return res.status(401).json({
+            success: false,
+            message,
+        });
+    }
 }
 export default HttpHelper;

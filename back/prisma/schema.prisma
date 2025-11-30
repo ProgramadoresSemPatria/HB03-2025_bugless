@@ -19,12 +19,27 @@ model User {
   email      String        @unique @map("email_user")
   password   String        @map("password_user")
   createdAt  DateTime      @default(now()) @map("created_at")
-  
+
   projects      Project[]
   subscriptions Subscription[]
   submissions   Submission[]
-  
+  cliSessions   CliSession[]
+
   @@map("user")
+}
+
+model CliSession {
+  id        String   @id @default(ulid())
+  sessionId String   @unique @map("session_id")
+  token     String?  @map("token")
+  userId    String?  @map("user_id")
+  status    String   @default("pending") // pending | completed | expired
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("cli_session")
 }
 
 model Project {
