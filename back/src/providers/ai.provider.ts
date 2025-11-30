@@ -1,20 +1,49 @@
-export interface AIReviewResult {
-    summary: string;
-    detectedIssues: string;
-    suggestedChanges: string;
+import { AIEngineInterface } from './engines/ai-engine.interface';
+import GeminiEngine from './engines/gemini.engine';
+
+enum AIEngine {
+  GEMINI = 'gemini',
 }
 
-class GeminiProvider {
-    async analyzeCode(code: string): Promise<AIReviewResult> {
-        // Mocked delay and response
-        await new Promise(resolve => setTimeout(resolve, 5000));
+// Builders to create the engines
+const ENGINE_BUILDERS: Record<AIEngine, () => AIEngineInterface> = {
+  [AIEngine.GEMINI]: () => new GeminiEngine(),
+};
 
-        return {
-            summary: "Simulated analysis: The code looks good, but there is room for improvement.",
-            detectedIssues: "- Variable 'a' is not explicitly typed.\n- Missing error handling.",
-            suggestedChanges: "- Add explicit TypeScript types.\n- Add a try/catch block."
-        }
+class AIProvider {
+  private static instance: AIProvider;
+  private engine: AIEngineInterface;
+
+  private constructor(engineType: AIEngine) {
+    const builder = ENGINE_BUILDERS[engineType];
+
+    if (!builder) {
+      throw new Error(`Engine "${engineType}" not configured`);
     }
+
+    this.engine = builder();
+  }
+
+  static getInstance(engineType: AIEngine = AIEngine.GEMINI): AIProvider {
+    if (!AIProvider.instance) {
+      AIProvider.instance = new AIProvider(engineType);
+    }
+    return AIProvider.instance;
+  }
+
+  async generateContent(fullPrompt: string): Promise<string> {
+    return this.engine.generateText(fullPrompt);
+  }
+
+  async generateStream(fullPrompt: string, onChunk: (chunk: string) => void): Promise<string> {
+    if (!this.engine.generateStream) {
+       // Fallback if engine doesn't support streaming, though we know Gemini does
+       const text = await this.engine.generateText(fullPrompt);
+       onChunk(text);
+       return text;
+    }
+    return this.engine.generateStream(fullPrompt, onChunk);
+  }
 }
 
-export default new GeminiProvider();
+export default AIProvider.getInstance();

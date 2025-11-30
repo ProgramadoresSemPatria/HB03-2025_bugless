@@ -38,7 +38,6 @@ class NotifyService {
     }
 
     addClient(submissionId: string, res: SseResponse) {
-        console.log(`[SSE] 📝 Registrando cliente para submission: ${submissionId}`);
 
         // if the client is not in the map, add it
         if (!this.clients.has(submissionId)) {
@@ -48,12 +47,10 @@ class NotifyService {
 
         this.setupHeaders(res);
 
-        // Send connected event to the new client
+        // Send the connected event immediately to the new client
         this.sendEvent(res, { type: EventType.CONNECTED });
-        console.log(`[SSE] ✅ Cliente registrado. Total: ${this.clients.get(submissionId)?.length}`);
 
         res.on('close', () => {
-            console.log(`[SSE] 🔌 Cliente desconectado para submission: ${submissionId}`);
             const clients = this.clients.get(submissionId) || [];
             this.clients.set(submissionId, clients.filter(client => client !== res));
         });
@@ -66,7 +63,6 @@ class NotifyService {
         // if the clients are not empty, send the event to the clients
         if (clients && clients.length > 0) {
             clients.forEach(client => {
-                console.log(`[SSE] 📤 Enviando evento: ${data.type}`);
                 this.sendEvent(client, data);
 
                 if (closeConnection) {
@@ -78,8 +74,6 @@ class NotifyService {
             if (closeConnection) {
                 this.clients.delete(submissionId);
             }
-        } else {
-            console.log(`[SSE] ⚠️ Nenhum cliente conectado para submission ${submissionId}`);
         }
     }
 }
