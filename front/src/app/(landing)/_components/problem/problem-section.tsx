@@ -1,17 +1,15 @@
 'use client'
 
 import { useSectionReveal } from '@/app/(landing)/_hooks/use-section-reveal'
-import { MotionDiv } from '@/components/motion'
 import {
   BugIcon,
   ClockIcon,
   MagnifyingGlassIcon,
 } from '@phosphor-icons/react/dist/ssr'
-import { motion } from 'framer-motion'
 import { Container } from '../shared/container'
-import { SectionDescription } from '../shared/section-description'
-import { SectionHeading } from '../shared/section-heading'
+import { AnimatedLines } from './animated-lines'
 import { ProblemCard } from './problem-card'
+import { ProblemHeader } from './problem-header'
 
 const problems = [
   {
@@ -37,60 +35,12 @@ const problems = [
 export function ProblemSection() {
   const { ref, isInView } = useSectionReveal()
 
-  const lineVariants = {
-    hidden: { width: 0 },
-    visible: (i: number) => ({
-      width: ['0%', '100%', '0%'],
-      transition: {
-        times: [0, 0.5, 1],
-        duration: 5,
-        delay: i * 0.35,
-        repeat: Infinity,
-      },
-    }),
-  }
-
   return (
     <section ref={ref} className='relative bg-background pt-12 pb-48'>
-      {/* Lines left */}
-      <div className='absolute top-1/2 left-0 hidden h-[400px] w-[250px] -translate-y-1/2 flex-col justify-between md:flex'>
-        {[...Array(6).keys()].map((i) => (
-          <motion.div
-            key={i}
-            custom={i}
-            initial='hidden'
-            animate={isInView ? 'visible' : 'hidden'}
-            variants={lineVariants}
-            className='h-0.5 w-full bg-linear-to-r from-primary to-transparent'
-          />
-        ))}
-      </div>
-      {/* Lines right */}
-      <div className='absolute top-1/2 right-0 hidden h-[400px] w-[250px] -translate-y-1/2 flex-col items-end justify-between md:flex'>
-        {[...Array(6).keys()].map((i) => (
-          <motion.div
-            key={i}
-            custom={i}
-            initial='hidden'
-            animate={isInView ? 'visible' : 'hidden'}
-            variants={lineVariants}
-            className='h-0.5 w-full bg-linear-to-l from-primary to-transparent'
-          />
-        ))}
-      </div>
+      <AnimatedLines isInView={isInView} />
 
       <Container className='relative'>
-        <MotionDiv isInView={isInView} className='pb-16'>
-          <SectionHeading>
-            Stop shipping bugs. Start shipping confidence.
-          </SectionHeading>
-          <SectionDescription className='mx-auto max-w-2xl text-lg text-text-secondary'>
-            Every developer knows the frustration: code that looked perfect
-            breaks in production. Manual reviews miss edge cases. Static linters
-            throw false positives. You need a smarter way to catch problems
-            before they become incidents.
-          </SectionDescription>
-        </MotionDiv>
+        <ProblemHeader isInView={isInView} />
 
         <div className='grid gap-6 md:grid-cols-3'>
           {problems.map((problem, i) => (
