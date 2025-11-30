@@ -20,10 +20,11 @@ model User {
   password   String        @map("password_user")
   createdAt  DateTime      @default(now()) @map("created_at")
 
-  projects      Project[]
-  subscriptions Subscription[]
-  submissions   Submission[]
-  cliSessions   CliSession[]
+  projects            Project[]
+  subscriptions       Subscription[]
+  submissions         Submission[]
+  cliSessions         CliSession[]
+  githubInstallations GitHubInstallation[]
 
   @@map("user")
 }
@@ -131,12 +132,13 @@ model Submission {
   projectId         String            @map("project_id")
   statusSubmissionId String           @map("id_status_submission")
   metadata          Json?             @map("metadata")
-  
-  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  project         Project           @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  statusSubmission StatusSubmission @relation(fields: [statusSubmissionId], references: [id])
-  reviews         Review[]
-  
+
+  user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project           Project           @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  statusSubmission  StatusSubmission  @relation(fields: [statusSubmissionId], references: [id])
+  reviews           Review[]
+  githubPullRequest GitHubPullRequest?
+
   @@map("submission")
 }
 
@@ -147,8 +149,44 @@ model Review {
   suggestedChanges String? @map("suggested_changes") @db.Text
   createdAt       DateTime @default(now()) @map("created_at")
   submissionId    String   @map("id_submission")
-  
+
   submission Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
-  
+
   @@map("review")
+}
+
+model GitHubInstallation {
+  id             String   @id @default(ulid())
+  installationId String   @unique @map("installation_id")
+  accountLogin   String   @map("account_login")
+  accountType    String   @map("account_type")
+  userId         String?  @map("user_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  user         User?               @relation(fields: [userId], references: [id], onDelete: SetNull)
+  pullRequests GitHubPullRequest[]
+
+  @@map("github_installations")
+}
+
+model GitHubPullRequest {
+  id             String   @id @default(ulid())
+  prNumber       Int      @map("pr_number")
+  installationId String   @map("installation_id")
+  owner          String
+  repo           String
+  headRef        String   @map("head_ref")
+  baseRef        String   @map("base_ref")
+  commitSha      String   @map("commit_sha")
+  submissionId   String?  @unique @map("submission_id")
+  checkRunId     String?  @map("check_run_id")
+  status         String   @default("pending")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  installation GitHubInstallation @relation(fields: [installationId], references: [installationId])
+  submission   Submission?        @relation(fields: [submissionId], references: [id])
+
+  @@unique([owner, repo, prNumber])
+  @@map("github_pull_requests")
 }
