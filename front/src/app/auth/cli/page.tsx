@@ -1,80 +1,91 @@
 'use client'
 
 import { Suspense, useState } from 'react'
-import { useSearchParams } from 'next/navigation'
-import { GithubLogoIcon, GoogleLogoIcon } from '@phosphor-icons/react'
-import { cn } from '@/lib/utils'
+import { useSearchParams, useRouter } from 'next/navigation'
+import { EmailLoginForm } from './components/email-login-form'
+import { EmailRegisterForm } from './components/email-register-form'
 
-function LoginForm() {
+type AuthMode = 'login' | 'register'
+
+function AuthContent() {
   const params = useSearchParams()
+  const router = useRouter()
   const sessionId = params.get('sid')
-  const [isLoading, setIsLoading] = useState<'github' | 'google' | null>(null)
+  const [mode, setMode] = useState<AuthMode>('login')
 
-  const handleLogin = async (provider: 'github' | 'google') => {
-    setIsLoading(provider)
+  if (!sessionId) {
+    return (
+      <div className='text-center'>
+        <h2 className='mb-2 text-xl text-foreground'>Invalid Session</h2>
+        <p className='text-text-secondary'>
+          Please start the login process from the CLI.
+        </p>
+      </div>
+    )
+  }
 
-    // ============================================
-    // MOCK - Replace when OAuth is implemented
-    // ============================================
-
-    // TODO: When OAuth is ready:
-    // window.location.href = `/api/auth/${provider}?sid=${sessionId}`
-
-    // MOCK: Simulates delay and redirects to success
-    await new Promise((r) => setTimeout(r, 1500))
-    window.location.href = `/auth/success?sid=${sessionId}`
+  const handleSuccess = () => {
+    router.push(`/auth/success?sid=${sessionId}`)
   }
 
   return (
     <>
-      {/* Login Buttons */}
-      <div className='space-y-3'>
-        <button
-          onClick={() => handleLogin('github')}
-          disabled={isLoading !== null}
-          className={cn(
-            'flex w-full items-center justify-center gap-3',
-            'rounded-lg bg-[#24292e] px-4 py-3 text-white',
-            'transition-colors hover:bg-[#2f363d]',
-            'disabled:cursor-not-allowed disabled:opacity-50',
-            'focus:outline-none focus:ring-2 focus:ring-primary/50',
-          )}
-        >
-          <GithubLogoIcon weight='fill' className='size-5' />
-          {isLoading === 'github' ? 'Connecting...' : 'Continue with GitHub'}
-        </button>
+      <h2 className='mb-2 text-xl text-foreground'>
+        {mode === 'login' ? 'Sign in to CLI' : 'Create Account'}
+      </h2>
+      <p className='mb-8 text-text-secondary'>
+        {mode === 'login'
+          ? 'Enter your credentials to authenticate'
+          : 'Create an account to get started'}
+      </p>
 
-        <button
-          onClick={() => handleLogin('google')}
-          disabled={isLoading !== null}
-          className={cn(
-            'flex w-full items-center justify-center gap-3',
-            'rounded-lg border border-border bg-surface px-4 py-3 text-foreground',
-            'transition-colors hover:bg-surface-hover',
-            'disabled:cursor-not-allowed disabled:opacity-50',
-            'focus:outline-none focus:ring-2 focus:ring-primary/50',
-          )}
-        >
-          <GoogleLogoIcon weight='bold' className='size-5' />
-          {isLoading === 'google' ? 'Connecting...' : 'Continue with Google'}
-        </button>
-      </div>
-
-      {/* Session ID indicator (for debugging) */}
-      {sessionId && (
-        <p className='mt-6 text-xs text-text-muted'>
-          Session: {sessionId.slice(0, 8)}...
-        </p>
+      {mode === 'login' ? (
+        <EmailLoginForm sessionId={sessionId} onSuccess={handleSuccess} />
+      ) : (
+        <EmailRegisterForm sessionId={sessionId} onSuccess={handleSuccess} />
       )}
+
+      {/* Toggle between login and register */}
+      <p className='mt-6 text-sm text-text-secondary'>
+        {mode === 'login' ? (
+          <>
+            Don&apos;t have an account?{' '}
+            <button
+              type='button'
+              onClick={() => setMode('register')}
+              className='text-primary hover:underline'
+            >
+              Create one
+            </button>
+          </>
+        ) : (
+          <>
+            Already have an account?{' '}
+            <button
+              type='button'
+              onClick={() => setMode('login')}
+              className='text-primary hover:underline'
+            >
+              Sign in
+            </button>
+          </>
+        )}
+      </p>
+
+      {/* Session indicator */}
+      <p className='mt-4 text-xs text-text-muted'>
+        Session: {sessionId.slice(0, 8)}...
+      </p>
     </>
   )
 }
 
-function LoginFormFallback() {
+function AuthFallback() {
   return (
-    <div className='space-y-3'>
-      <div className='h-12 animate-pulse rounded-lg bg-surface' />
-      <div className='h-12 animate-pulse rounded-lg bg-surface' />
+    <div className='space-y-4'>
+      <div className='h-11 animate-pulse rounded-md bg-surface' />
+      <div className='h-11 animate-pulse rounded-md bg-surface' />
+      <div className='h-11 animate-pulse rounded-md bg-surface' />
     </div>
   )
 }
@@ -85,14 +96,8 @@ export default function CLILoginPage() {
       {/* Logo */}
       <h1 className='mb-2 text-3xl font-headline text-foreground'>BugLess</h1>
 
-      {/* Title */}
-      <h2 className='mb-2 text-xl text-foreground'>Login to CLI</h2>
-      <p className='mb-8 text-text-secondary'>
-        Choose a provider to authenticate
-      </p>
-
-      <Suspense fallback={<LoginFormFallback />}>
-        <LoginForm />
+      <Suspense fallback={<AuthFallback />}>
+        <AuthContent />
       </Suspense>
     </div>
   )
