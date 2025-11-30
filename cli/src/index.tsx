@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from 'ink';
 import meow from 'meow';
 import { App } from './app.js';
+import { logout } from './services/auth.js';
 import type { ReviewMode, PresetName } from './types/review.js';
 
 const cli = meow(
@@ -29,6 +30,9 @@ const cli = meow(
     $ bugless config --api-key <key>   Set API key
     $ bugless config --api-url <url>   Set API URL
     $ bugless config --show            Show current config
+
+  Auth
+    $ bugless logout                   Logout and clear stored credentials
 `,
   {
     importMeta: import.meta,
@@ -88,6 +92,14 @@ function validatePreset(preset: string): PresetName {
 
 const mode = getMode();
 const preset = validatePreset(cli.flags.preset);
+
+// Handle logout command
+const isLogoutCommand = cli.input[0] === 'logout';
+if (isLogoutCommand) {
+  logout();
+  console.log('Logged out successfully. Run bugless again to login.');
+  process.exit(0);
+}
 
 // Handle config command
 const isConfigCommand = cli.input[0] === 'config';
