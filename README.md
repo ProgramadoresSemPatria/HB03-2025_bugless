@@ -251,10 +251,6 @@ pnpm dev
 | `GET` | `/submissions/:id/stream` | SSE stream for real-time review |
 | `POST` | `/webhooks/github` | GitHub webhook receiver |
 
-## GitHub App Setup
-
-For automatic PR reviews, you'll need to create a GitHub App. See the [detailed setup guide](back/docs/GITHUB_APP_SETUP.md).
-
 **Quick local testing with Smee:**
 
 ```bash
