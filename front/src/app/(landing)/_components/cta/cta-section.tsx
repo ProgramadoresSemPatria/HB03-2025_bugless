@@ -4,6 +4,7 @@ import { MotionDiv } from '@/components/motion'
 import { useSectionReveal } from '../../_hooks/use-section-reveal'
 import { InstallCommand } from '../hero'
 import { Container } from '../shared/container'
+import { GithubAppButton } from '../shared/github-app-button'
 import { SectionDescription } from '../shared/section-description'
 import { SectionHeading } from '../shared/section-heading'
 
@@ -20,6 +21,7 @@ export function CTASection() {
           </SectionDescription>
 
           <InstallCommand />
+          <GithubAppButton />
         </MotionDiv>
       </Container>
     </section>
