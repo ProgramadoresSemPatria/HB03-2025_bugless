@@ -1,3 +1,7 @@
+
+<div align="center">
+<img src="https://i.postimg.cc/1Xtf6hF8/bugless-logo-transparent.png" width="20%" style="position: relative; top: 0; right: 0;" alt="Project Logo"/>
+
 # BugLess
 
 [![npm version](https://img.shields.io/npm/v/bugless-cli.svg)](https://www.npmjs.com/package/bugless-cli)
@@ -5,18 +9,38 @@
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
 
+</div>
+
 **AI-powered code review tool for TypeScript developers.** Get instant, intelligent feedback on your code through a CLI tool or automated GitHub Pull Request reviews.
 
-## The Problem
+---
 
-Code reviews are essential but time-consuming. Developers wait hours or days for feedback, and reviewers often miss subtle bugs while focusing on style issues. Manual reviews don't scale with growing teams and fast-paced development cycles.
+## Table of Contents
 
-## The Solution
+- [Overview](#overview)
+- [Installation](#installation)
+- [Usage](#cli-usage)
+- [How It Works](#how-it-works)
+- [Features](#features)
+- [Local Development](#local-development)
+- [Project Structure](#project-structure)
+- [Team & License](#team)
 
-BugLess uses AI to provide instant, comprehensive code reviews that catch bugs, security vulnerabilities, and performance issues before they reach production. It integrates seamlessly into existing workflows through two interfaces:
+---
+
+## Overview
+
+Manual code reviews are vital but don't scale—they consume valuable time and often miss subtle issues.
+
+**BugLess** bridges this gap by leveraging AI to provide **instant, intelligent feedback**. Whether through our CLI or automatic GitHub integration, BugLess catches bugs, security vulnerabilities, and performance issues in real-time, allowing teams to merge faster and with greater confidence. It integrates seamlessly into existing workflows through two interfaces:
 
 - **CLI Tool**: Review code locally before committing
 - **GitHub App**: Automatic reviews on every Pull Request
+
+<div align="center">
+  <img src="https://i.postimg.cc/5ySDcyNk/code-review.png" alt="BugLess Automated PR Review Demo" width="50%" style="border-radius: 8px; border: 1px solid #30363d;">
+  <p><em>Automatic PR analysis running directly on GitHub</em></p>
+</div>
 
 ## Installation
 
@@ -115,8 +139,13 @@ bugless/
 │   │   ├── controllers/    # Request handlers
 │   │   ├── services/       # Business logic
 │   │   ├── workers/        # BullMQ job processors
-│   │   ├── providers/      # External services (AI, GitHub)
-│   │   └── routes/         # API endpoints
+│   │   ├── providers/      # External services (AI)
+│   │   ├── routes/         # API endpoints
+│   │   ├── middleware/    # Auth & webhook middleware
+│   │   ├── schemas/        # Validation schemas
+│   │   ├── config/         # Configuration files
+│   │   ├── database/       # Database connection
+│   │   └── utils/          # Utility functions
 │   └── prisma/             # Database schema & migrations
 │
 ├── cli/            # Command-line interface
@@ -124,12 +153,14 @@ bugless/
 │       ├── modes/          # Review modes (branch, commit, etc.)
 │       ├── components/     # Ink UI components
 │       ├── services/       # Git & API integration
+│       ├── hooks/          # React hooks
 │       └── prompts/        # AI prompts & presets
 │
 └── front/          # Landing page
     └── src/
         ├── app/            # Next.js App Router
-        └── components/     # React components
+        ├── components/     # React components
+        └── lib/            # Utilities & helpers
 ```
 
 ## Local Development
