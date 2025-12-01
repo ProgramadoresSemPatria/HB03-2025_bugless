@@ -1,11 +1,11 @@
 'use client'
 
+import { InstallCommand } from '../shared/install-command'
 import { AnimatedBugIcon } from './animated-bug-icon'
 import { BackedBadge } from './backed-badge'
 import { FlowFieldCanvas } from './flow-field-canvas'
 import { HeroHeadline } from './hero-headline'
 import { HeroSubtitle } from './hero-subtitle'
-import { InstallCommand } from './install-command'
 
 export function HeroSection() {
   return (

@@ -1,7 +1,7 @@
+export { InstallCommand } from '../shared/install-command'
 export { AnimatedBugIcon } from './animated-bug-icon'
 export { BackedBadge } from './backed-badge'
 export { FlowFieldCanvas } from './flow-field-canvas'
 export { HeroHeadline } from './hero-headline'
 export { HeroSection } from './hero-section'
 export { HeroSubtitle } from './hero-subtitle'
-export { InstallCommand } from './install-command'
