@@ -32,8 +32,21 @@ export function PreviewSection() {
           className='w-full'
         >
           <Container className='max-w-7xl px-4'>
-            <div className='flex aspect-video w-full items-center justify-center rounded-xl bg-white text-xl text-black'>
-              VIDEO PREVIEW
+            <div className='aspect-video w-full overflow-hidden rounded-xl shadow-2xl'>
+              <video
+                className='size-full object-fill'
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload='metadata'
+              >
+                <source
+                  src='assets/videos/bugless-preview.mp4'
+                  type='video/mp4'
+                />
+                Your browser does not support the video tag.
+              </video>
             </div>
           </Container>
         </motion.div>
