@@ -18,7 +18,7 @@ export function PreviewSection() {
   return (
     <section
       ref={containerRef}
-      className='relative bg-background lg:min-h-[150vh]'
+      className='relative bg-background lg:-mt-16 lg:min-h-[150vh]'
     >
       <div className='sticky top-0 z-10 flex h-[50vh] items-center justify-center sm:h-screen'>
         <motion.div
