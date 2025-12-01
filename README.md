@@ -1,103 +1,179 @@
 # BugLess
 
-AI-powered code review tool focused on TypeScript. Get instant, intelligent feedback on your code through CLI, GitHub integration, or web interface.
+[![npm version](https://img.shields.io/npm/v/bugless-cli.svg)](https://www.npmjs.com/package/bugless-cli)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
 
-## Overview
+**AI-powered code review tool for TypeScript developers.** Get instant, intelligent feedback on your code through a CLI tool or automated GitHub Pull Request reviews.
 
-BugLess helps developers catch bugs, improve code quality, and maintain best practices through automated AI-powered code reviews. It supports multiple review modes and integrates seamlessly into your development workflow.
+## The Problem
 
-### Key Features
+Code reviews are essential but time-consuming. Developers wait hours or days for feedback, and reviewers often miss subtle bugs while focusing on style issues. Manual reviews don't scale with growing teams and fast-paced development cycles.
 
-- **CLI Tool**: Review code directly from your terminal
-- **GitHub App Integration**: Automatic reviews on Pull Requests
-- **Multiple Review Modes**: PR diffs, uncommitted changes, specific commits, or custom code
-- **Review Presets**: Standard, security, performance, quick, or thorough analysis
-- **Real-time Streaming**: Watch reviews as they're generated
+## The Solution
+
+BugLess uses AI to provide instant, comprehensive code reviews that catch bugs, security vulnerabilities, and performance issues before they reach production. It integrates seamlessly into existing workflows through two interfaces:
+
+- **CLI Tool**: Review code locally before committing
+- **GitHub App**: Automatic reviews on every Pull Request
+
+## Installation
+
+### Option 1: CLI (Terminal)
+
+```bash
+npm install -g bugless-cli
+bugless
+```
+
+### Option 2: GitHub App (Automatic PR Reviews)
+
+[![Install GitHub App](https://img.shields.io/badge/GitHub-Install%20App-181717?logo=github)](https://github.com/apps/bugless-code-review)
+
+[**Install BugLess on your repositories**](https://github.com/apps/bugless-code-review)
+
+## How It Works
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        BugLess Architecture                     │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   Developer                                                     │
+│       │                                                         │
+│       ├──► CLI ──────────────────┐                              │
+│       │    bugless -b main       │                              │
+│       │                          ▼                              │
+│       │                   ┌─────────────┐     ┌──────────────┐  │
+│       │                   │   Backend   │────►│  PostgreSQL  │  │
+│       │                   │  (Express)  │     └──────────────┘  │
+│       │                   └──────┬──────┘                       │
+│       │                          │                              │
+│       └──► GitHub PR ────►  Webhook  │      ┌──────────────┐    │
+│            (Auto Review)         │    ├────►│    Redis     │    │
+│                                  ▼    │     │   (BullMQ)   │    │
+│                           ┌──────────┐│     └──────────────┘    │
+│                           │  Worker  ││                         │
+│                           │ (Gemini) │◄─────────────────────    │
+│                           └────┬─────┘                          │
+│                                │                                │
+│                                ▼                                │
+│                         Code Review                             │
+│                    (Streamed in real-time)                      │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+## Features
+
+| Feature | Description |
+|---------|-------------|
+| **Multiple Review Modes** | PR diffs, uncommitted changes, specific commits, or custom code snippets |
+| **Review Presets** | Standard, security-focused, performance-focused, quick, or thorough analysis |
+| **Real-time Streaming** | Watch the AI review as it's being generated |
+| **GitHub Integration** | Automatic comments on Pull Requests with actionable feedback |
+| **Project Context** | Custom instructions per project for domain-specific reviews |
+
+## CLI Usage
+
+```bash
+# Interactive mode - select what to review
+bugless
+
+# Review changes against a branch (PR-style)
+bugless -b main
+
+# Review uncommitted changes
+bugless -u
+
+# Review a specific commit
+bugless -c abc1234
+
+# Use a specific review preset
+bugless -b main -p security    # Focus on vulnerabilities
+bugless -u -p performance      # Focus on performance issues
+bugless -u -p thorough         # Comprehensive analysis
+```
+
+## Tech Stack
+
+| Layer | Technologies |
+|-------|--------------|
+| **Backend** | Node.js, Express 5, Prisma ORM, PostgreSQL, Redis, BullMQ |
+| **AI** | Google Gemini API |
+| **CLI** | TypeScript, React, Ink (React for CLIs), simple-git |
+| **Frontend** | Next.js 16, React 19, Tailwind CSS 4, Framer Motion |
+| **Infrastructure** | Docker, GitHub Apps, Webhooks |
 
 ## Project Structure
 
 ```
 bugless/
-├── back/       # Backend API (Express + Prisma + BullMQ)
-├── cli/        # Command-line interface (Ink + React)
-├── front/      # Landing page (Next.js 16)
-└── docs/       # Documentation
+├── back/           # REST API & background workers
+│   ├── src/
+│   │   ├── controllers/    # Request handlers
+│   │   ├── services/       # Business logic
+│   │   ├── workers/        # BullMQ job processors
+│   │   ├── providers/      # External services (AI, GitHub)
+│   │   └── routes/         # API endpoints
+│   └── prisma/             # Database schema & migrations
+│
+├── cli/            # Command-line interface
+│   └── src/
+│       ├── modes/          # Review modes (branch, commit, etc.)
+│       ├── components/     # Ink UI components
+│       ├── services/       # Git & API integration
+│       └── prompts/        # AI prompts & presets
+│
+└── front/          # Landing page
+    └── src/
+        ├── app/            # Next.js App Router
+        └── components/     # React components
 ```
 
-## Quick Start
+## Local Development
 
 ### Prerequisites
 
 - Node.js 18+
-- pnpm (recommended) or npm
-- Docker & Docker Compose (for backend services)
+- Docker & Docker Compose
+- pnpm (recommended)
 
-### 1. Clone the Repository
+### Setup
 
 ```bash
+# Clone the repository
 git clone https://github.com/ProgramadoresSemPatria/HB03-2025_bugless.git
 cd HB03-2025_bugless
-```
 
-### 2. Backend Setup
-
-```bash
+# Start infrastructure (PostgreSQL + Redis)
 cd back
-
-# Copy environment variables
-cp .env.example .env
-# Edit .env with your configuration
-
-# Start PostgreSQL and Redis
+cp .env.example .env    # Configure your environment
 docker-compose up -d
 
-# Install dependencies
+# Install dependencies and start backend
 npm install
-
-# Run migrations
 npm run prisma:migrate
-
-# Start the server
 npm run dev
-```
 
-### 3. CLI Setup
-
-```bash
+# In another terminal - start CLI in dev mode
 cd cli
-
-# Copy environment variables
 cp .env.example .env
-
-# Install dependencies
 npm install
+npm run dev
 
-# Build and link globally
-npm run build
-npm link
-
-# Use the CLI
-bugless
-```
-
-### 4. Frontend Setup
-
-```bash
+# In another terminal - start frontend
 cd front
-
-# Copy environment variables
 cp .env.example .env
-
-# Install dependencies
 pnpm install
-
-# Start development server
 pnpm dev
 ```
 
-## Environment Variables
+### Environment Variables
 
-### Backend (`back/.env`)
+<details>
+<summary><strong>Backend (back/.env)</strong></summary>
 
 | Variable | Description |
 |----------|-------------|
@@ -106,84 +182,59 @@ pnpm dev
 | `REDIS_PORT` | Redis port |
 | `REDIS_PASSWORD` | Redis password |
 | `JWT_SECRET` | Secret for JWT tokens |
-| `GOOGLE_API_KEY` | Google AI API key for code reviews |
-| `GITHUB_APP_ID` | GitHub App ID (for PR reviews) |
+| `GOOGLE_API_KEY` | Google Gemini API key |
+| `GITHUB_APP_ID` | GitHub App ID |
 | `GITHUB_PRIVATE_KEY` | GitHub App private key |
 | `GITHUB_WEBHOOK_SECRET` | Webhook signature secret |
 
-### CLI (`cli/.env`)
+</details>
+
+<details>
+<summary><strong>CLI (cli/.env)</strong></summary>
 
 | Variable | Description |
 |----------|-------------|
 | `BUGLESS_API_URL` | Backend API URL |
-| `BUGLESS_WEB_URL` | Frontend URL (for login) |
+| `BUGLESS_WEB_URL` | Frontend URL (for OAuth) |
 | `BUGLESS_USE_MOCK` | Use mock data for development |
 
-### Frontend (`front/.env`)
+</details>
+
+<details>
+<summary><strong>Frontend (front/.env)</strong></summary>
 
 | Variable | Description |
 |----------|-------------|
 | `NEXT_PUBLIC_API_URL` | Backend API URL |
 
+</details>
+
+## API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/auth/register` | Register new user |
+| `POST` | `/auth/login` | Authenticate user |
+| `POST` | `/auth/cli/session` | Create CLI auth session |
+| `POST` | `/submissions` | Submit code for review |
+| `GET` | `/submissions/:id/stream` | SSE stream for real-time review |
+| `POST` | `/webhooks/github` | GitHub webhook receiver |
+
 ## GitHub App Setup
 
-To enable automatic PR reviews, configure the GitHub App. See [GitHub App Setup Guide](back/docs/GITHUB_APP_SETUP.md).
+For automatic PR reviews, you'll need to create a GitHub App. See the [detailed setup guide](back/docs/GITHUB_APP_SETUP.md).
 
-For local development with webhooks, use smee.io:
+**Quick local testing with Smee:**
 
 ```bash
 npm install -g smee-client
 smee -u https://smee.io/YOUR_CHANNEL -t http://localhost:3000/webhooks/github
 ```
 
-## Tech Stack
+## Team
 
-| Component | Technologies |
-|-----------|--------------|
-| **Backend** | Express 5, Prisma, PostgreSQL, Redis, BullMQ, Google AI |
-| **CLI** | TypeScript, Ink, React, simple-git |
-| **Frontend** | Next.js 16, React 19, Tailwind CSS 4, Framer Motion |
-
-## Scripts Reference
-
-### Backend
-
-```bash
-npm run dev              # Start with hot reload
-npm run prisma:studio    # Open Prisma Studio
-npm run prisma:migrate   # Run migrations
-npm run prisma:generate  # Generate Prisma client
-npm run prisma:seed      # Seed database
-```
-
-### CLI
-
-```bash
-npm run dev       # Watch mode
-npm run build     # Build for production
-npm run start     # Run built version
-npm run typecheck # Type check
-```
-
-### Frontend
-
-```bash
-pnpm dev    # Development server
-pnpm build  # Production build
-pnpm start  # Start production server
-pnpm lint   # Run ESLint
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+Built for [Borderless Coding](https://github.com/ProgramadoresSemPatria) Hackathon 2025.
 
 ## License
 
 MIT License - see [LICENSE](LICENSE) for details.
-
-Copyright (c) 2025 Borderless Coding

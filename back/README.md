@@ -1,39 +1,70 @@
 # BugLess Backend
 
-REST API for BugLess - handles authentication, code submissions, AI-powered reviews, and GitHub App integration.
+REST API and background workers for the BugLess code review platform.
 
-## Stack
+## Tech Stack
 
-- **Runtime:** Node.js 18+
-- **Framework:** Express 5
-- **Database:** PostgreSQL + Prisma ORM
-- **Queue:** Redis + BullMQ
-- **AI:** Google Generative AI (Gemini)
-- **GitHub:** Octokit + GitHub App
+- **Runtime**: Node.js 18+
+- **Framework**: Express 5
+- **Database**: PostgreSQL + Prisma ORM
+- **Queue**: Redis + BullMQ
+- **AI**: Google Gemini API
+- **Auth**: JWT + bcrypt
+- **GitHub**: Octokit + GitHub App webhooks
+
+## Architecture
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│                         Express API                          │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐   │
+│  │    Auth     │  │ Submissions │  │  GitHub Webhooks    │   │
+│  │  /auth/*    │  │/submissions │  │ /webhooks/github    │   │
+│  └──────┬──────┘  └──────┬──────┘  └──────────┬──────────┘   │
+│         │                │                    │              │
+│         ▼                ▼                    ▼              │
+│  ┌─────────────────────────────────────────────────────┐     │
+│  │                   Services Layer                    │     │
+│  │  AuthService | SubmissionService | GitHubService    │     │
+│  └─────────────────────────┬───────────────────────────┘     │
+│                            │                                 │
+│         ┌──────────────────┴──────────────────┐              │
+│         ▼                                     ▼              │
+│  ┌─────────────┐                      ┌─────────────┐        │
+│  │  PostgreSQL │                      │    Redis    │        │
+│  │   (Prisma)  │                      │  (BullMQ)   │        │
+│  └─────────────┘                      └──────┬──────┘        │
+│                                              │               │
+│                                              ▼               │
+│                                       ┌─────────────┐        │
+│                                       │   Worker    │        │
+│                                       │  (Gemini)   │        │
+│                                       └─────────────┘        │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
 
 ## Quick Start
 
 ```bash
-# Copy environment variables
+# 1. Configure environment
 cp .env.example .env
-# Edit .env with your configuration
 
-# Start PostgreSQL and Redis
+# 2. Start infrastructure
 docker-compose up -d
 
-# Install dependencies
+# 3. Install dependencies
 npm install
 
-# Generate Prisma client
-npm run prisma:generate
-
-# Run migrations
+# 4. Run database migrations
 npm run prisma:migrate
 
-# Seed database (optional)
-npm run prisma:seed
+# 5. Generate Prisma client
+npm run prisma:generate
 
-# Start development server
+# 6. Start development server
 npm run dev
 ```
 
@@ -45,136 +76,132 @@ PORT=3000
 FRONTEND_URL=http://localhost:3001
 
 # Database
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=your-password
-POSTGRES_DB=bugless
-POSTGRES_PORT=5432
-DATABASE_URL=postgresql://postgres:your-password@localhost:5432/bugless
+DATABASE_URL=postgresql://user:password@localhost:5432/bugless
 
-# Redis (for BullMQ)
+# Redis
 REDIS_PORT=6379
 REDIS_PASSWORD=your-redis-password
 
-# JWT
-JWT_SECRET=your-super-secret-jwt-key
+# Authentication
+JWT_SECRET=your-jwt-secret
 JWT_EXPIRES_IN=7d
-
-# CLI Session
 CLI_SESSION_EXPIRY_MINUTES=10
 
-# Google AI
-GOOGLE_API_KEY=your-google-ai-api-key
+# AI Provider
+GOOGLE_API_KEY=your-gemini-api-key
 
-# GitHub App (optional - for PR reviews)
+# GitHub App (optional)
 GITHUB_APP_ID=123456
 GITHUB_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----"
 GITHUB_WEBHOOK_SECRET=your-webhook-secret
 ```
 
-## API Endpoints
+## API Reference
 
 ### Authentication
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/auth/register` | Register new user |
-| POST | `/auth/login` | Login user |
-| POST | `/auth/cli/session` | Create CLI session |
-| GET | `/auth/cli/session/:id` | Check CLI session status |
-| POST | `/auth/cli/session/:id/complete` | Complete CLI session |
+| `POST` | `/auth/register` | Create new user account |
+| `POST` | `/auth/login` | Authenticate and receive JWT |
+| `POST` | `/auth/cli/session` | Create CLI authentication session |
+| `GET` | `/auth/cli/session/:id` | Poll CLI session status |
+| `POST` | `/auth/cli/session/:id/complete` | Complete CLI authentication |
 
 ### Projects
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/projects` | List user projects |
-| POST | `/projects` | Create project |
-| GET | `/projects/:id` | Get project details |
-| PUT | `/projects/:id` | Update project |
-| DELETE | `/projects/:id` | Delete project |
+| `GET` | `/projects` | List user's projects |
+| `POST` | `/projects` | Create new project |
+| `GET` | `/projects/:id` | Get project details |
+| `PUT` | `/projects/:id` | Update project settings |
+| `DELETE` | `/projects/:id` | Delete project |
 
 ### Submissions
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/submissions` | Create code review submission |
-| GET | `/submissions/:id` | Get submission with review |
-| GET | `/submissions/:id/stream` | SSE stream for review progress |
-
-### Status
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/status-submissions` | List submission statuses |
+| `POST` | `/submissions` | Submit code for AI review |
+| `GET` | `/submissions/:id` | Get submission with review |
+| `GET` | `/submissions/:id/stream` | SSE stream for real-time review |
 
 ### Webhooks
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/webhooks/github` | GitHub App webhook receiver |
+| `POST` | `/webhooks/github` | Receive GitHub App events |
 
 ## Project Structure
 
 ```
 back/
-├── server.ts              # Entry point
-├── docker-compose.yaml    # PostgreSQL + Redis
+├── server.ts                 # Application entry point
+├── docker-compose.yaml       # PostgreSQL + Redis
 ├── prisma/
-│   ├── schema.prisma      # Database schema
-│   ├── migrations/        # Migration files
-│   └── seed.ts            # Seed data
-├── src/
-│   ├── config/            # Configuration files
-│   ├── controllers/       # Request handlers
-│   ├── database/          # Database connection
-│   ├── generated/         # Prisma generated client
-│   ├── middleware/        # Auth, validation middleware
-│   ├── providers/         # External services (AI, GitHub)
-│   ├── routes/            # API routes
-│   ├── schemas/           # Zod validation schemas
-│   ├── services/          # Business logic
-│   ├── utils/             # Utility functions
-│   └── workers/           # BullMQ workers
-└── docs/
-    └── GITHUB_APP_SETUP.md
+│   ├── schema.prisma         # Database schema
+│   ├── migrations/           # Migration history
+│   └── seed.ts               # Seed data
+└── src/
+    ├── config/               # Environment & Prisma config
+    ├── controllers/          # Request handlers
+    ├── database/             # Database connection
+    ├── generated/            # Prisma generated client
+    ├── middleware/           # Auth & validation middleware
+    ├── providers/            # External services
+    │   ├── ai.provider.ts    # Google Gemini integration
+    │   └── github.provider.ts# GitHub API integration
+    ├── routes/               # API route definitions
+    ├── schemas/              # Zod validation schemas
+    ├── services/             # Business logic
+    ├── utils/                # Helper functions
+    └── workers/              # BullMQ job processors
+        └── review.worker.ts  # AI review processing
 ```
 
 ## Database Schema
 
-### Main Models
+### Core Models
 
-- **User**: Authentication and profile
-- **Project**: Code projects with custom instructions
-- **Submission**: Code submitted for review
-- **Review**: AI-generated review results
-- **CliSession**: Browser-based CLI authentication
-- **GitHubInstallation**: GitHub App installations
-- **GitHubPullRequest**: PR tracking for automatic reviews
+| Model | Description |
+|-------|-------------|
+| `User` | User accounts with authentication |
+| `Project` | Code projects with custom review instructions |
+| `Submission` | Code submitted for review |
+| `Review` | AI-generated review results |
+| `CliSession` | Browser-based CLI authentication |
+
+### GitHub Integration
+
+| Model | Description |
+|-------|-------------|
+| `GitHubInstallation` | GitHub App installation records |
+| `GitHubPullRequest` | PR tracking for automatic reviews |
 
 ### Submission Modes
 
 | Mode | Description |
 |------|-------------|
-| `PR_DIFF` | Review changes between branches |
-| `UNCOMMITTED` | Review unstaged changes |
+| `PR_DIFF` | Compare branches (PR-style review) |
+| `UNCOMMITTED` | Review unstaged/staged changes |
 | `COMMIT` | Review a specific commit |
-| `CUSTOM` | Review custom code snippet |
+| `CUSTOM` | Review arbitrary code snippet |
 
 ## Scripts
 
 ```bash
-npm run dev              # Start with hot reload (tsx watch)
+npm run dev              # Start with hot reload
 npm run prisma:studio    # Open Prisma Studio GUI
 npm run prisma:migrate   # Create and run migrations
 npm run prisma:generate  # Generate Prisma client
-npm run prisma:push      # Push schema to database
-npm run prisma:seed      # Seed database with initial data
+npm run prisma:push      # Push schema without migration
+npm run prisma:seed      # Seed database
 ```
 
 ## Docker Services
 
 ```bash
-# Start all services
+# Start PostgreSQL and Redis
 docker-compose up -d
 
 # View logs
@@ -183,47 +210,27 @@ docker-compose logs -f
 # Stop services
 docker-compose down
 
-# Reset data
+# Reset all data
 docker-compose down -v
 ```
 
 ## GitHub App Integration
 
-For automatic PR reviews, configure a GitHub App. See [GITHUB_APP_SETUP.md](docs/GITHUB_APP_SETUP.md).
+The backend receives webhooks from GitHub when PRs are opened or updated. It then:
+
+1. Validates the webhook signature
+2. Fetches the PR diff using Octokit
+3. Creates a submission in the database
+4. Queues an AI review job
+5. Posts the review as a PR comment
+
+For setup instructions, see [GITHUB_APP_SETUP.md](docs/GITHUB_APP_SETUP.md).
 
 ### Local Development with Smee
 
 ```bash
-# Install smee client
 npm install -g smee-client
-
-# Start proxy (replace with your channel URL)
 smee -u https://smee.io/YOUR_CHANNEL -t http://localhost:3000/webhooks/github
-```
-
-## Architecture
-
-```
-                    ┌─────────────────┐
-                    │   GitHub PR     │
-                    └────────┬────────┘
-                             │ webhook
-                             ▼
-┌─────────┐         ┌─────────────────┐         ┌─────────────┐
-│   CLI   │────────▶│  Express API    │────────▶│  PostgreSQL │
-└─────────┘         └────────┬────────┘         └─────────────┘
-                             │
-                             ▼
-                    ┌─────────────────┐
-                    │     BullMQ      │
-                    │  (Redis Queue)  │
-                    └────────┬────────┘
-                             │
-                             ▼
-                    ┌─────────────────┐
-                    │  Review Worker  │
-                    │   (Google AI)   │
-                    └─────────────────┘
 ```
 
 ## License
