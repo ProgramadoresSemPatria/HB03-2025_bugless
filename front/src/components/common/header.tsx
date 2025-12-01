@@ -4,6 +4,7 @@ import { Container } from '@/app/(landing)/_components/shared/container'
 import { NAV_LINKS } from '@/lib/constants'
 import { ListIcon, XIcon } from '@phosphor-icons/react'
 import { AnimatePresence, motion } from 'framer-motion'
+import Link from 'next/link'
 import { useState } from 'react'
 import { Button } from '../ui/button'
 import { Logo } from './logo'
@@ -40,7 +41,9 @@ export function Header() {
             </nav>
 
             <div className='hidden md:flex'>
-              <Button>Get started</Button>
+              <Button asChild>
+                <Link href='/dashboard'>Get started</Link>
+              </Button>
             </div>
 
             <Button
@@ -90,16 +93,13 @@ export function Header() {
                 </motion.a>
               ))}
 
-              <motion.button
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-                whileTap={{ scale: 0.98 }}
+              <Link
+                href='/dashboard'
                 onClick={() => setIsMobileMenuOpen(false)}
-                className='mt-4 cursor-pointer rounded-lg bg-primary px-8 py-3 text-lg font-medium text-primary-foreground transition-colors hover:bg-primary-hover'
+                className='mt-4 rounded-lg bg-primary px-8 py-3 text-lg font-medium text-primary-foreground transition-colors hover:bg-primary-hover'
               >
                 Get Started
-              </motion.button>
+              </Link>
             </motion.nav>
           </motion.div>
         )}
