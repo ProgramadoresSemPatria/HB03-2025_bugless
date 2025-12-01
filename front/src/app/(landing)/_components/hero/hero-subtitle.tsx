@@ -13,7 +13,7 @@ export function HeroSubtitle() {
     >
       <SectionDescription>
         AI Agent that handles code review and complex refactoring,
-        automatically.
+        automatically. Available as CLI tool and GitHub App.
       </SectionDescription>
     </motion.div>
   )

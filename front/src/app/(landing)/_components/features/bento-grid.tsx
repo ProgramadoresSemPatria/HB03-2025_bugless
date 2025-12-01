@@ -6,11 +6,11 @@ import {
   GearIcon,
   GitBranchIcon,
   GitCommitIcon,
+  GithubLogoIcon,
   LightningIcon,
   LockIcon,
   SlidersHorizontalIcon,
   SparkleIcon,
-  TerminalIcon,
 } from '@phosphor-icons/react'
 import { motion } from 'framer-motion'
 import { FeatureCard } from './feature-card'
@@ -84,13 +84,24 @@ export function BentoGrid({ isInView }: BentoGridProps) {
       delay: 0.5,
     },
     {
-      icon: TerminalIcon,
-      title: 'Fast Reviews',
+      icon: GitBranchIcon,
+      title: 'GitHub App Integration',
       description:
-        'Get results in seconds for single commits. Scales efficiently even for full codebases.',
+        'Install our GitHub app in your repositories to get automatic code reviews on every pull request with actionable feedback.',
       className:
         'md:col-span-2 lg:col-span-2 bg-linear-to-t from-primary/5 via-primary/5 to-background',
       delay: 0.6,
+      children: (
+        <a
+          href='https://github.com/apps/bugless-code-review'
+          target='_blank'
+          rel='noopener noreferrer'
+          className='inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-hover'
+        >
+          <GithubLogoIcon size={16} weight='bold' />
+          Install GitHub App
+        </a>
+      ),
     },
     {
       icon: LockIcon,
