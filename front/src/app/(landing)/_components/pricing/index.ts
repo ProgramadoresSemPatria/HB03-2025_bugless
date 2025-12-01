@@ -1,2 +1,2 @@
-export { PricingSection } from "./pricing-section";
-export { PricingCard } from "./pricing-card";
+export { PricingCard } from './pricing-card'
+export { PricingSection } from './pricing-section'

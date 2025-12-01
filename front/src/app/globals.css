@@ -1,49 +1,49 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
   /* Primary - Coral Ember */
-  --primary: #FF6B35;
-  --primary-hover: #FF8555;
-  --primary-light: #FF8F6B;
+  --primary: #ff6b35;
+  --primary-hover: #ff8555;
+  --primary-light: #ff8f6b;
   --primary-muted: rgba(255, 107, 53, 0.2);
-  --primary-foreground: #FAFAFA;
+  --primary-foreground: #fafafa;
 
   /* Background */
-  --background: #0A0A0A;
+  --background: #0a0a0a;
   --surface: #141414;
-  --surface-hover: #1A1A1A;
-  --surface-elevated: #1E1E1E;
+  --surface-hover: #1a1a1a;
+  --surface-elevated: #1e1e1e;
 
   /* Border */
   --border: #262626;
   --border-hover: #333333;
-  --border-subtle: #1A1A1A;
+  --border-subtle: #1a1a1a;
 
   /* Text */
-  --foreground: #FAFAFA;
-  --text-secondary: #A1A1A1;
-  --text-muted: #6B6B6B;
+  --foreground: #fafafa;
+  --text-secondary: #a1a1a1;
+  --text-muted: #6b6b6b;
 
   /* Semantic */
-  --success: #10B981;
-  --warning: #F59E0B;
-  --error: #EF4444;
-  --destructive: #EF4444;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --destructive: #ef4444;
 
   /* shadcn compatibility */
   --card: #141414;
-  --card-foreground: #FAFAFA;
-  --popover: #1E1E1E;
-  --popover-foreground: #FAFAFA;
+  --card-foreground: #fafafa;
+  --popover: #1e1e1e;
+  --popover-foreground: #fafafa;
   --secondary: #262626;
-  --secondary-foreground: #FAFAFA;
-  --muted: #1A1A1A;
-  --muted-foreground: #A1A1A1;
-  --accent: #1E1E1E;
-  --accent-foreground: #FAFAFA;
-  --destructive-foreground: #FAFAFA;
+  --secondary-foreground: #fafafa;
+  --muted: #1a1a1a;
+  --muted-foreground: #a1a1a1;
+  --accent: #1e1e1e;
+  --accent-foreground: #fafafa;
+  --destructive-foreground: #fafafa;
   --input: #262626;
-  --ring: #FF6B35;
+  --ring: #ff6b35;
   --radius: 0.5rem;
 }
 
@@ -83,53 +83,56 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-html {
-  color-scheme: dark;
-}
+@layer base {
+  * {
+    @apply border-border outline-ring;
+  }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-body), system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+  html {
+    @apply scheme-dark;
+  }
 
-h1, h2, h3 {
-  font-family: var(--font-headline), sans-serif;
-}
+  body {
+    @apply bg-background font-sans text-foreground;
+  }
 
-code, pre, kbd {
-  font-family: var(--font-mono), monospace;
-}
+  h1,
+  h2,
+  h3 {
+    @apply font-headline;
+  }
 
-/* Focus ring */
-:focus-visible {
-  outline: 2px solid var(--ring);
-  outline-offset: 2px;
-}
+  code,
+  pre,
+  kbd {
+    @apply font-mono;
+  }
 
-/* Selection */
-::selection {
-  background: var(--primary-muted);
-  color: var(--foreground);
-}
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
 
-/* Scrollbar (Webkit) */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
+  ::selection {
+    background: var(--primary-muted);
+    color: var(--foreground);
+  }
 
-::-webkit-scrollbar-track {
-  background: var(--background);
-}
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
 
-::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 4px;
-}
+  ::-webkit-scrollbar-track {
+    background: var(--background);
+  }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--border-hover);
+  ::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--border-hover);
+  }
 }

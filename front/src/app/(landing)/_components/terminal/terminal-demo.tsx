@@ -1,210 +1,233 @@
-"use client";
+'use client'
 
-import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState, useCallback } from "react";
+import { AnimatePresence, motion } from 'framer-motion'
+import { useCallback, useEffect, useState } from 'react'
 
 type Phase =
-  | "typing-command"
-  | "show-prompt"
-  | "show-options"
-  | "navigating-options"
-  | "selected-option"
-  | "scanning"
-  | "show-results"
-  | "show-actions"
-  | "typing-action"
-  | "applying-fixes"
-  | "done";
+  | 'typing-command'
+  | 'show-prompt'
+  | 'show-options'
+  | 'navigating-options'
+  | 'selected-option'
+  | 'scanning'
+  | 'show-results'
+  | 'show-actions'
+  | 'typing-action'
+  | 'applying-fixes'
+  | 'done'
 
 const reviewOptions = [
-  "1. Review against a base branch (PR style)",
-  "2. Review uncommitted changes",
-  "3. Review a commit",
-  "4. Custom review instructions",
-];
+  '1. Review against a base branch (PR style)',
+  '2. Review uncommitted changes',
+  '3. Review a commit',
+  '4. Custom review instructions',
+]
 
-const TYPING_SPEED = 50;
-const PHASE_DELAY = 500;
-const NAV_SPEED = 250;
-const LOOP_DELAY = 4000;
+const TYPING_SPEED = 50
+const PHASE_DELAY = 500
+const NAV_SPEED = 250
+const LOOP_DELAY = 4000
 
 interface TerminalDemoProps {
-  isInView?: boolean;
+  isInView?: boolean
 }
 
 export function TerminalDemo({ isInView = true }: TerminalDemoProps) {
-  const [phase, setPhase] = useState<Phase>("typing-command");
-  const [hasStarted, setHasStarted] = useState(false);
-  const [typedCommand, setTypedCommand] = useState("");
-  const [selectedOption, setSelectedOption] = useState(-1);
-  const [scanProgress, setScanProgress] = useState(0);
-  const [typedAction, setTypedAction] = useState("");
-  const [fixProgress, setFixProgress] = useState(0);
+  const [phase, setPhase] = useState<Phase>('typing-command')
+  const [hasStarted, setHasStarted] = useState(false)
+  const [typedCommand, setTypedCommand] = useState('')
+  const [selectedOption, setSelectedOption] = useState(-1)
+  const [scanProgress, setScanProgress] = useState(0)
+  const [typedAction, setTypedAction] = useState('')
+  const [fixProgress, setFixProgress] = useState(0)
 
-  const command = "bugless";
-  const targetOption = 1; // Will select option 2 (index 1)
+  const command = 'bugless'
+  const targetOption = 1 // Will select option 2 (index 1)
 
   const reset = useCallback(() => {
-    setPhase("typing-command");
-    setTypedCommand("");
-    setSelectedOption(-1);
-    setScanProgress(0);
-    setTypedAction("");
-    setFixProgress(0);
-  }, []);
+    setPhase('typing-command')
+    setTypedCommand('')
+    setSelectedOption(-1)
+    setScanProgress(0)
+    setTypedAction('')
+    setFixProgress(0)
+  }, [])
 
   // Start animation only when in view for the first time
   useEffect(() => {
     if (isInView && !hasStarted) {
-      setHasStarted(true);
+      setHasStarted(true)
     }
-  }, [isInView, hasStarted]);
+  }, [isInView, hasStarted])
 
   // Typing effect for command
   useEffect(() => {
-    if (!hasStarted) return;
-    if (phase !== "typing-command") return;
+    if (!hasStarted) return
+    if (phase !== 'typing-command') return
 
     if (typedCommand.length < command.length) {
       const timer = setTimeout(() => {
-        setTypedCommand(command.slice(0, typedCommand.length + 1));
-      }, TYPING_SPEED);
-      return () => clearTimeout(timer);
+        setTypedCommand(command.slice(0, typedCommand.length + 1))
+      }, TYPING_SPEED)
+      return () => clearTimeout(timer)
     } else {
-      const timer = setTimeout(() => setPhase("show-prompt"), PHASE_DELAY);
-      return () => clearTimeout(timer);
+      const timer = setTimeout(() => setPhase('show-prompt'), PHASE_DELAY)
+      return () => clearTimeout(timer)
     }
-  }, [phase, typedCommand, hasStarted]);
+  }, [phase, typedCommand, hasStarted])
 
   // Phase transitions
   useEffect(() => {
-    if (!hasStarted) return;
-    if (phase === "show-prompt") {
-      const timer = setTimeout(() => setPhase("show-options"), PHASE_DELAY);
-      return () => clearTimeout(timer);
+    if (!hasStarted) return
+    if (phase === 'show-prompt') {
+      const timer = setTimeout(() => setPhase('show-options'), PHASE_DELAY)
+      return () => clearTimeout(timer)
     }
-    if (phase === "show-options") {
+    if (phase === 'show-options') {
       const timer = setTimeout(() => {
-        setSelectedOption(0);
-        setPhase("navigating-options");
-      }, PHASE_DELAY);
-      return () => clearTimeout(timer);
+        setSelectedOption(0)
+        setPhase('navigating-options')
+      }, PHASE_DELAY)
+      return () => clearTimeout(timer)
     }
-    if (phase === "selected-option") {
-      const timer = setTimeout(() => setPhase("scanning"), PHASE_DELAY);
-      return () => clearTimeout(timer);
+    if (phase === 'selected-option') {
+      const timer = setTimeout(() => setPhase('scanning'), PHASE_DELAY)
+      return () => clearTimeout(timer)
     }
-    if (phase === "show-results") {
-      const timer = setTimeout(() => setPhase("show-actions"), 800);
-      return () => clearTimeout(timer);
+    if (phase === 'show-results') {
+      const timer = setTimeout(() => setPhase('show-actions'), 800)
+      return () => clearTimeout(timer)
     }
-    if (phase === "show-actions") {
-      const timer = setTimeout(() => setPhase("typing-action"), 600);
-      return () => clearTimeout(timer);
+    if (phase === 'show-actions') {
+      const timer = setTimeout(() => setPhase('typing-action'), 600)
+      return () => clearTimeout(timer)
     }
-    if (phase === "done") {
-      const timer = setTimeout(reset, LOOP_DELAY);
-      return () => clearTimeout(timer);
+    if (phase === 'done') {
+      const timer = setTimeout(reset, LOOP_DELAY)
+      return () => clearTimeout(timer)
     }
-  }, [phase, reset, hasStarted]);
+  }, [phase, reset, hasStarted])
 
   // Navigation through options
   useEffect(() => {
-    if (!hasStarted) return;
-    if (phase !== "navigating-options") return;
+    if (!hasStarted) return
+    if (phase !== 'navigating-options') return
 
     if (selectedOption < targetOption) {
       const timer = setTimeout(() => {
-        setSelectedOption((prev) => prev + 1);
-      }, NAV_SPEED);
-      return () => clearTimeout(timer);
+        setSelectedOption((prev) => prev + 1)
+      }, NAV_SPEED)
+      return () => clearTimeout(timer)
     } else {
-      const timer = setTimeout(() => setPhase("selected-option"), PHASE_DELAY);
-      return () => clearTimeout(timer);
+      const timer = setTimeout(() => setPhase('selected-option'), PHASE_DELAY)
+      return () => clearTimeout(timer)
     }
-  }, [phase, selectedOption, hasStarted]);
+  }, [phase, selectedOption, hasStarted])
 
   // Scanning animation
   useEffect(() => {
-    if (!hasStarted) return;
-    if (phase !== "scanning") return;
+    if (!hasStarted) return
+    if (phase !== 'scanning') return
 
     if (scanProgress < 3) {
       const timer = setTimeout(() => {
-        setScanProgress((p) => p + 1);
-      }, 350);
-      return () => clearTimeout(timer);
+        setScanProgress((p) => p + 1)
+      }, 350)
+      return () => clearTimeout(timer)
     } else {
-      const timer = setTimeout(() => setPhase("show-results"), 400);
-      return () => clearTimeout(timer);
+      const timer = setTimeout(() => setPhase('show-results'), 400)
+      return () => clearTimeout(timer)
     }
-  }, [phase, scanProgress, hasStarted]);
+  }, [phase, scanProgress, hasStarted])
 
   // Typing action "a"
   useEffect(() => {
-    if (!hasStarted) return;
-    if (phase !== "typing-action") return;
+    if (!hasStarted) return
+    if (phase !== 'typing-action') return
 
     if (typedAction.length < 1) {
       const timer = setTimeout(() => {
-        setTypedAction("a");
-      }, 300);
-      return () => clearTimeout(timer);
+        setTypedAction('a')
+      }, 300)
+      return () => clearTimeout(timer)
     } else {
-      const timer = setTimeout(() => setPhase("applying-fixes"), 400);
-      return () => clearTimeout(timer);
+      const timer = setTimeout(() => setPhase('applying-fixes'), 400)
+      return () => clearTimeout(timer)
     }
-  }, [phase, typedAction, hasStarted]);
+  }, [phase, typedAction, hasStarted])
 
   // Applying fixes animation
   useEffect(() => {
-    if (!hasStarted) return;
-    if (phase !== "applying-fixes") return;
+    if (!hasStarted) return
+    if (phase !== 'applying-fixes') return
 
     if (fixProgress < 2) {
       const timer = setTimeout(() => {
-        setFixProgress((p) => p + 1);
-      }, 500);
-      return () => clearTimeout(timer);
+        setFixProgress((p) => p + 1)
+      }, 500)
+      return () => clearTimeout(timer)
     } else {
-      const timer = setTimeout(() => setPhase("done"), 600);
-      return () => clearTimeout(timer);
+      const timer = setTimeout(() => setPhase('done'), 600)
+      return () => clearTimeout(timer)
     }
-  }, [phase, fixProgress, hasStarted]);
+  }, [phase, fixProgress, hasStarted])
 
   // Visibility helpers
-  const showPrompt = !["typing-command"].includes(phase);
-  const showOptions = ["show-options", "navigating-options", "selected-option"].includes(phase);
-  const showScanning = ["scanning", "show-results", "show-actions", "typing-action", "applying-fixes", "done"].includes(phase);
-  const showResults = ["show-results", "show-actions", "typing-action", "applying-fixes", "done"].includes(phase);
-  const showActions = ["show-actions", "typing-action", "applying-fixes", "done"].includes(phase);
-  const showApplying = ["applying-fixes", "done"].includes(phase);
+  const showPrompt = !['typing-command'].includes(phase)
+  const showOptions = [
+    'show-options',
+    'navigating-options',
+    'selected-option',
+  ].includes(phase)
+  const showScanning = [
+    'scanning',
+    'show-results',
+    'show-actions',
+    'typing-action',
+    'applying-fixes',
+    'done',
+  ].includes(phase)
+  const showResults = [
+    'show-results',
+    'show-actions',
+    'typing-action',
+    'applying-fixes',
+    'done',
+  ].includes(phase)
+  const showActions = [
+    'show-actions',
+    'typing-action',
+    'applying-fixes',
+    'done',
+  ].includes(phase)
+  const showApplying = ['applying-fixes', 'done'].includes(phase)
 
   return (
-    <div className="overflow-hidden rounded-xl border-2 border-border bg-background">
-      <div className="flex items-center gap-2 border-b border-border bg-surface-elevated px-4 py-3">
-        <div className="size-3 rounded-full bg-error" />
-        <div className="size-3 rounded-full bg-warning" />
-        <div className="size-3 rounded-full bg-success" />
-        <span className="ml-2 font-mono text-xs text-text-muted">
+    <div className='overflow-hidden rounded-xl border-2 bg-background'>
+      <div className='flex items-center gap-2 border-b bg-surface-elevated px-4 py-3'>
+        <div className='size-3 rounded-full bg-error' />
+        <div className='size-3 rounded-full bg-warning' />
+        <div className='size-3 rounded-full bg-success' />
+        <span className='ml-2 font-mono text-xs text-text-muted'>
           bugless review
         </span>
       </div>
 
-      <div className="h-[520px] overflow-hidden p-5 font-mono text-sm">
-        <div className="flex items-center text-text-muted">
+      <div className='h-[520px] overflow-hidden p-5 font-mono text-sm'>
+        <div className='flex items-center text-text-muted'>
           <span>$ </span>
-          <span className="text-foreground">{typedCommand}</span>
-          {phase === "typing-command" && (
+          <span className='text-foreground'>{typedCommand}</span>
+          {phase === 'typing-command' && (
             <motion.span
               animate={{ opacity: [1, 0] }}
               transition={{ duration: 0.5, repeat: Infinity }}
-              className="ml-px inline-block h-4 w-2 bg-primary"
+              className='ml-px inline-block h-4 w-2 bg-primary'
             />
           )}
-          {phase !== "typing-command" && typedCommand.length === command.length && (
-            <span className="ml-2 text-text-muted/50 text-xs">↵</span>
-          )}
+          {phase !== 'typing-command' &&
+            typedCommand.length === command.length && (
+              <span className='ml-2 text-xs text-text-muted/50'>↵</span>
+            )}
         </div>
 
         <AnimatePresence>
@@ -212,7 +235,7 @@ export function TerminalDemo({ isInView = true }: TerminalDemoProps) {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="mt-3 text-foreground"
+              className='mt-3 text-foreground'
             >
               ? What would you like to review?
             </motion.div>
@@ -224,23 +247,23 @@ export function TerminalDemo({ isInView = true }: TerminalDemoProps) {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="mt-1 space-y-0.5"
+              className='mt-1 space-y-0.5'
             >
               {reviewOptions.map((option, i) => (
                 <div
                   key={i}
                   className={`flex items-center transition-colors duration-100 ${
                     i === selectedOption
-                      ? "text-primary"
-                      : "text-text-secondary"
+                      ? 'text-primary'
+                      : 'text-text-secondary'
                   }`}
                 >
-                  <span className="w-4 text-primary">
-                    {i === selectedOption ? "›" : " "}
+                  <span className='w-4 text-primary'>
+                    {i === selectedOption ? '›' : ' '}
                   </span>
                   <span>{option}</span>
-                  {i === selectedOption && phase === "selected-option" && (
-                    <span className="ml-2 text-text-muted/50 text-xs">↵</span>
+                  {i === selectedOption && phase === 'selected-option' && (
+                    <span className='ml-2 text-xs text-text-muted/50'>↵</span>
                   )}
                 </div>
               ))}
@@ -253,12 +276,13 @@ export function TerminalDemo({ isInView = true }: TerminalDemoProps) {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="mt-3"
+              className='mt-3'
             >
-              <div className="text-primary flex items-center gap-2">
+              <div className='flex items-center gap-2 text-primary'>
                 <span>\×/</span>
                 <span>
-                  BugLess • Analyzing {scanProgress < 3 ? `${scanProgress + 1}/3` : "3"} files
+                  BugLess • Analyzing{' '}
+                  {scanProgress < 3 ? `${scanProgress + 1}/3` : '3'} files
                   {scanProgress < 3 && (
                     <motion.span
                       animate={{ opacity: [1, 0.3] }}
@@ -267,7 +291,9 @@ export function TerminalDemo({ isInView = true }: TerminalDemoProps) {
                       ...
                     </motion.span>
                   )}
-                  {scanProgress >= 3 && <span className="text-success ml-1">✓</span>}
+                  {scanProgress >= 3 && (
+                    <span className='ml-1 text-success'>✓</span>
+                  )}
                 </span>
               </div>
             </motion.div>
@@ -279,30 +305,34 @@ export function TerminalDemo({ isInView = true }: TerminalDemoProps) {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="mt-3 space-y-2"
+              className='mt-3 space-y-2'
             >
-              <div className="space-y-0.5">
-                <div className="text-error">✖ CRITICAL  src/api/users.ts:42</div>
-                <div className="pl-4 text-text-secondary text-xs">
+              <div className='space-y-0.5'>
+                <div className='text-error'>
+                  ✖ CRITICAL src/api/users.ts:42
+                </div>
+                <div className='pl-4 text-xs text-text-secondary'>
                   SQL injection vulnerability in query builder
                 </div>
-                <div className="pl-4 text-primary/80 text-xs">
+                <div className='pl-4 text-xs text-primary/80'>
                   💡 Use parameterized queries instead
                 </div>
               </div>
 
-              <div className="space-y-0.5">
-                <div className="text-warning">⚠ WARNING   src/utils/parser.ts:18</div>
-                <div className="pl-4 text-text-secondary text-xs">
+              <div className='space-y-0.5'>
+                <div className='text-warning'>
+                  ⚠ WARNING src/utils/parser.ts:18
+                </div>
+                <div className='pl-4 text-xs text-text-secondary'>
                   Unhandled promise rejection possible
                 </div>
-                <div className="pl-4 text-primary/80 text-xs">
+                <div className='pl-4 text-xs text-primary/80'>
                   💡 Add try/catch or .catch() handler
                 </div>
               </div>
 
-              <div className="border-t border-border/30 pt-2 mt-2">
-                <div className="text-foreground">
+              <div className='border-t/30 mt-2 pt-2'>
+                <div className='text-foreground'>
                   \×/ Found: 1 critical, 1 warning, 0 info
                 </div>
               </div>
@@ -315,34 +345,36 @@ export function TerminalDemo({ isInView = true }: TerminalDemoProps) {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="mt-3"
+              className='mt-3'
             >
-              <div className="flex items-center gap-4 text-xs">
-                <span className={`px-2 py-0.5 rounded ${typedAction === "a" ? "bg-primary text-primary-foreground" : "text-text-muted border border-border/50"}`}>
+              <div className='flex items-center gap-4 text-xs'>
+                <span
+                  className={`rounded px-2 py-0.5 ${typedAction === 'a' ? 'bg-primary text-primary-foreground' : 'border/50 text-text-muted'}`}
+                >
                   [A] Apply all
                 </span>
-                <span className="text-text-muted border border-border/50 px-2 py-0.5 rounded">
+                <span className='border/50 rounded px-2 py-0.5 text-text-muted'>
                   [F] Apply one
                 </span>
-                <span className="text-text-muted border border-border/50 px-2 py-0.5 rounded">
+                <span className='border/50 rounded px-2 py-0.5 text-text-muted'>
                   [S] Skip
                 </span>
               </div>
 
-              {phase === "typing-action" && !typedAction && (
-                <div className="mt-2 flex items-center">
-                  <span className="text-text-muted">› </span>
+              {phase === 'typing-action' && !typedAction && (
+                <div className='mt-2 flex items-center'>
+                  <span className='text-text-muted'>› </span>
                   <motion.span
                     animate={{ opacity: [1, 0] }}
                     transition={{ duration: 0.5, repeat: Infinity }}
-                    className="inline-block h-4 w-2 bg-primary"
+                    className='inline-block h-4 w-2 bg-primary'
                   />
                 </div>
               )}
               {typedAction && (
-                <div className="mt-2 text-text-muted">
-                  › <span className="text-foreground">{typedAction}</span>
-                  <span className="ml-2 text-text-muted/50 text-xs">↵</span>
+                <div className='mt-2 text-text-muted'>
+                  › <span className='text-foreground'>{typedAction}</span>
+                  <span className='ml-2 text-xs text-text-muted/50'>↵</span>
                 </div>
               )}
             </motion.div>
@@ -354,13 +386,13 @@ export function TerminalDemo({ isInView = true }: TerminalDemoProps) {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="mt-3 space-y-1"
+              className='mt-3 space-y-1'
             >
               {fixProgress >= 1 && (
                 <motion.div
                   initial={{ opacity: 0, x: -5 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className="text-success flex items-center gap-2"
+                  className='flex items-center gap-2 text-success'
                 >
                   <span>✓</span>
                   <span>Fixed: src/api/users.ts:42</span>
@@ -370,7 +402,7 @@ export function TerminalDemo({ isInView = true }: TerminalDemoProps) {
                 <motion.div
                   initial={{ opacity: 0, x: -5 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className="text-success flex items-center gap-2"
+                  className='flex items-center gap-2 text-success'
                 >
                   <span>✓</span>
                   <span>Fixed: src/utils/parser.ts:18</span>
@@ -381,7 +413,7 @@ export function TerminalDemo({ isInView = true }: TerminalDemoProps) {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.3 }}
-                  className="mt-2 pt-2 border-t border-border/30 text-foreground font-medium"
+                  className='border-t/30 mt-2 pt-2 font-medium text-foreground'
                 >
                   \×/ All fixes applied successfully!
                 </motion.div>
@@ -391,5 +423,5 @@ export function TerminalDemo({ isInView = true }: TerminalDemoProps) {
         </AnimatePresence>
       </div>
     </div>
-  );
+  )
 }
